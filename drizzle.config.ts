@@ -1,9 +1,9 @@
-import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
+  // This tells Drizzle to look for any .ts file inside the schema folder
+  schema: "./src/db/schema/*",
   out: "./drizzle",
-  schema: "./src/db/schema.ts",
   dialect: "mysql",
   dbCredentials: {
     url: process.env.DATABASE_URL!,
