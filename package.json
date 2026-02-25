@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "better-auth": "^1.4.19",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
     "mysql2": "^3.18.1",
