@@ -1,0 +1,1 @@
+// School page as stated in wireframe. (search for major at [SCHOOL])
