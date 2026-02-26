@@ -1,5 +1,6 @@
 import { int, mysqlTable, serial, varchar } from "drizzle-orm/mysql-core";
 
+// TODO: remove example schema stuff and replace with actual RateMyMajor stuff
 export const usersTable = mysqlTable("users_table", {
   id: serial().primaryKey(),
   name: varchar({ length: 255 }).notNull(),
