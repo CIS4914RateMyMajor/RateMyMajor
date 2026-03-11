@@ -13,6 +13,11 @@ export default async function ProfilePage() {
     redirect("/signin");
   }
 
+  // 3. Redirect to verify-email if not verified
+  if (!session.user.emailVerified) {
+    redirect(`/verify-email?email=${encodeURIComponent(session.user.email)}`);
+  }
+
   const { user } = session;
 
   return (
