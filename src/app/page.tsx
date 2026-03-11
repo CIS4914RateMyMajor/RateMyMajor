@@ -1,3 +1,5 @@
+import NavBar from "./nav-bar";
+
 import { headers } from "next/headers";
 import Link from "next/link";
 
@@ -14,7 +16,8 @@ export default async function Home() {
   if (!session) {
     return (
       <div className="flex flex-col items-center justify-center h-screen gap-4">
-        <h1 className="text-4xl font-bold">Cosden Solutions</h1>
+          <NavBar brandName= " blah blah" imageSrcPath="yes" navItems= {["home", "sign in" , "Sign up"]}/>
+          <h1 className="text-4xl font-bold">Rate My Major</h1>
         <div className="flex gap-4 mt-8">
           <Button asChild size="lg">
             <Link href="/signup">Sign Up</Link>
@@ -29,7 +32,8 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-4">
-      <h1 className="text-4xl font-bold">Cosden Solutions</h1>
+        <NavBar brandName= " blah blah" imageSrcPath="yes" navItems= {["home", "sign in" , "Sign up"]}/>
+        <h1 className="text-4xl font-bold">Rate my Major</h1>
       <div className="mt-8 text-center">
         <p className="text-lg mb-4">User ID: {session.user.id}</p>
         <form action={signOutAction}>
