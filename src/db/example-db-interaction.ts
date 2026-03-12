@@ -96,9 +96,9 @@ async function main() {
   console.log("-----------------------------------\n");
 
   // 8. Clean up (Cascading deletes will handle Departments, Majors, Reviews, and Review_Majors automatically)
-  // await db.delete(user).where(eq(user.id, userId));
-  // await db.delete(university).where(eq(university.id, uniId));
-  // console.log("Cleaned up test data!");
+  await db.delete(user).where(eq(user.id, userId));
+  await db.delete(university).where(eq(university.id, uniId));
+  console.log("Cleaned up test data!");
 }
 
 if (require.main === module) {

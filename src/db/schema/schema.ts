@@ -18,7 +18,7 @@ export const university = mysqlTable("university", {
 
 export const department = mysqlTable("department", {
   id: serial("id").primaryKey(),
-  universityId: bigint("university_id", { mode: "number", unsigned: true }).references(
+  universityId: bigint("university_id", { mode: "number", unsigned: true }).notNull().references(
     () => university.id,
     { onDelete: "cascade" }
   ),
@@ -27,7 +27,7 @@ export const department = mysqlTable("department", {
 
 export const major = mysqlTable("major", {
   id: serial("id").primaryKey(),
-  departmentId: bigint("department_id", { mode: "number", unsigned: true }).references(
+  departmentId: bigint("department_id", { mode: "number", unsigned: true }).notNull().references(
     () => department.id,
     { onDelete: "cascade" }
   ),
@@ -37,28 +37,23 @@ export const major = mysqlTable("major", {
 
 export const reviews = mysqlTable("reviews", {
   id: serial("id").primaryKey(),
-  userId: varchar("user_id", { length: 36 }).references(
-    () => user.id,
-    { onDelete: "cascade" }
-  ),
+  userId: varchar("user_id", { length: 36 })
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   rating: int("rating"),
   difficulty: int("difficulty"),
   comment: text("comment"),
   majorStatus: varchar("major_status", { length: 50 }),
   reviewStatus: varchar("review_status", { length: 50 }),
   creationDate: timestamp("creation_date").defaultNow(),
-  lastUpdated: timestamp("last_updated").onUpdateNow(),
+  lastUpdated: timestamp("last_updated").defaultNow().onUpdateNow().notNull(),
 });
 
 export const reviewMajors = mysqlTable(
   "review_majors",
   {
-    majorId: bigint("major_id", { mode: "number", unsigned: true })
-      .references(() => major.id, { onDelete: "cascade" })
-      .notNull(),
-    reviewId: bigint("review_id", { mode: "number", unsigned: true })
-      .references(() => reviews.id, { onDelete: "cascade" })
-      .notNull(),
+    majorId: bigint("major_id", { mode: "number", unsigned: true }).references(() => major.id, { onDelete: "cascade" }).notNull(),
+    reviewId: bigint("review_id", { mode: "number", unsigned: true }).references(() => reviews.id, { onDelete: "cascade" }).notNull(),
   },
   (table) => {
     return {
