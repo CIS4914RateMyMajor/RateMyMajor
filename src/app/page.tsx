@@ -26,7 +26,7 @@ export default async function Home() {
             </div>
 
             <h1 className="text-5xl font-black tracking-tight text-center leading-none uppercase">
-              RATE MY<br />MAJOR
+              RATE MY MAJOR
             </h1>
 
             {/* Right sketch icon placeholder */}
