@@ -30,6 +30,7 @@ export async function signUpAction(
   prevState: SignUpFormState,
   formData: FormData
 ): Promise<SignUpFormState> {
+  console.log("signUpAction triggered");
   if (!formData) {
     return { message: "No form data received." };
   }
@@ -50,7 +51,7 @@ export async function signUpAction(
   const { email, password, name } = validatedFields.data;
 
   try {
-    // send to backend
+    // 1. Create the user (autoSignIn: false ensures they aren't logged in yet)
     await auth.api.signUpEmail({
       body: {
         email,
@@ -58,13 +59,31 @@ export async function signUpAction(
         name,
       },
     });
-  } catch (e) {
+
+    // 2. Manually send the OTP
+    console.log("Triggering OTP send for:", email);
+    await auth.api.sendVerificationOTP({
+        body: {
+            email,
+            type: "email-verification", // This identifies the purpose of the OTP
+        }
+    });
+
+  } catch (e: any) {
+    console.error("SignUp Action Error:", e);
+    if (e.message?.includes("User already exists") || e.code === "USER_ALREADY_EXISTS") {
+      return {
+        message: "Email address is already in use.",
+        fields: { email, name }
+      };
+    }
+    
     return {
       message: "Failed to sign up. Please try again.",
     };
   }
 
-  redirect("/");
+  redirect(`/verify-email?email=${encodeURIComponent(email)}`);
 }
 
 export async function signInAction(formData: FormData) {
