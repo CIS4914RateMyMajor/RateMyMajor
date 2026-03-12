@@ -2,7 +2,7 @@ import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
   // This tells Drizzle to look for any .ts file inside the schema folder
-  schema: "./src/db/schema/*",
+  schema: "./src/db/schema/**/*.ts",
   out: "./drizzle",
   dialect: "mysql",
   dbCredentials: {

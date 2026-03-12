@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:studio": "drizzle-kit studio",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:example": "tsx src/db/example-db-interaction.ts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.5.3",
