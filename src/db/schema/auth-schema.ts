@@ -6,6 +6,7 @@ import {
   timestamp,
   boolean,
   index,
+  int,
 } from "drizzle-orm/mysql-core";
 
 export const user = mysqlTable("user", {
@@ -14,6 +15,8 @@ export const user = mysqlTable("user", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
+  userYear: int("user_year"),
+  role: varchar("role", { length: 50 }),
   createdAt: timestamp("created_at", { fsp: 3 }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { fsp: 3 })
     .defaultNow()
