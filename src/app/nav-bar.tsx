@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react" ;
-import "./globals.css";
+// import "./globals.css";
 
 // interface NavBarProps{
 //     brandName: string;
@@ -13,9 +13,9 @@ export default function NavBar () {
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
     return (
-        <nav className="flex items-center justify-between px-0 py-0 border-b-6 border-black">
+        <nav className="w-full flex items-center justify-between border-b-6 border-black">
             <div className="flex items-center gap-2">
-                <span className="font-bold text-lg tracking-tight ml-5">{"RateMyMajor"}</span>
+                <a href="/" className="font-bold text-lg tracking-tight ml-5">{"RateMyMajor"}</a>
             </div>
             <div className="flex items-center text-sm font-bold tracking-widest">
                 <a href="/signup" className="px-8 py-6 text-base border-l-6 border-t-0 border-b-0 border-r-6 border-black hover:bg-black hover:text-white transition-colors">

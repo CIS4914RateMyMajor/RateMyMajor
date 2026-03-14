@@ -3,8 +3,9 @@
 import { useActionState } from "react";
 import { Button } from "@/features/shared/components/ui/button";
 import { Input } from "@/features/shared/components/ui/input";
-
+import Navbar from "../nav-bar";
 import { signUpAction, type SignUpFormState } from "../actions/auth";
+
 
 export default function SignUpPage() {
   const [state, action, isPending] = useActionState<SignUpFormState, FormData>(
@@ -13,7 +14,9 @@ export default function SignUpPage() {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4">
+      <div>
+        <Navbar />
+        <div className="flex flex-col items-center justify-center h-screen gap-4">
       <h1 className="text-2xl font-bold">Sign Up</h1>
       <form action={action} className="flex flex-col gap-3 w-64" noValidate>
         <div className="flex flex-col gap-1">
@@ -66,5 +69,6 @@ export default function SignUpPage() {
         </Button>
       </form>
     </div>
+      </div>
   );
 }
