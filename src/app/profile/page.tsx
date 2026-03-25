@@ -1,27 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../nav-bar.tsx";
 import { Button } from "@/features/shared/components/ui/button";
 import { Input } from "@/features/shared/components/ui/input";
+import { usersAPI } from "@/lib/users";
 
 export default function ProfilePage() {
   // 1. MOCK DATA STATE
   const [isEditing, setIsEditing] = useState(true); // Set to true initially as requested
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState({
-    name: "Test User",
-    email: "test@ufl.edu", // Not editable
-    major: "Computer Science",
-    college: "Engineering",
-    gpa: "3.8",
+    name: "", // loaded from API
+    email: "", // loaded from API
+    major: "Computer Science", // TODO: from DB
+    college: "Engineering", // TODO: from DB
+    gpa: "3.8", // TODO: from DB
     image: null,
-    id: "mock-user-123",
-    createdAt: new Date().toISOString(),
+    id: "",
+    createdAt: "",
   });
 
-  const handleSave = () => {
-    // In a real app, you'd call a Server Action here to update the DB
-    setIsEditing(false);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const serverProfile = await usersAPI.getProfile();
+        setProfile((current) => ({
+          ...current,
+          name: serverProfile.username || current.name,
+          email: serverProfile.email || current.email,
+          // TODO: major/college/gpa when available in API
+        }));
+      } catch (err: any) {
+        setError(err?.message || "Failed to load profile");
+        console.error("Failed to load profile", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      await usersAPI.updateProfile({ username: profile.name });
+      // name and email remain in state from form and API
+    } catch (error) {
+      console.error("Failed to save profile", error);
+    } finally {
+      setIsEditing(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,9 +69,11 @@ export default function ProfilePage() {
               {isEditing ? "Edit Profile" : "User Profile"}
             </h1>
 
+            {isLoading && <p className="text-center text-slate-500">Loading profile...</p>}
+            {error && <p className="text-center text-red-600">{error}</p>}
+
             <div className="space-y-6">
-              {/* PROFILE PICTURE SECTION */}
-              <div className="flex flex-col items-center">
+              {/* PROFILE PICTURE SECTION */}              <div className="flex flex-col items-center">
                 <div className="relative group">
                   <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center text-3xl font-bold text-slate-400 border-2 border-slate-200">
                     {profile.name.charAt(0).toUpperCase()}
