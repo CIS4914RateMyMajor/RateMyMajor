@@ -21,7 +21,7 @@ export default function NavBar () {
                 <a href="/signup" className="px-8 py-6 text-base border-l-6 border-t-0 border-b-0 border-r-6 border-black hover:bg-black hover:text-white transition-colors">
                 SIGN UP
                 </a>
-                <a href="/login" className="px-8 py-6 text-base border-l border-t-0 border-b-0 border-r-6 border-black hover:bg-black hover:text-white transition-colors">
+                <a href="/signin" className="px-8 py-6 text-base border-l border-t-0 border-b-0 border-r-6 border-black hover:bg-black hover:text-white transition-colors">
                 LOG IN
                 </a>
             </div>
