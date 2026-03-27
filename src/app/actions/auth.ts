@@ -86,75 +86,47 @@ export async function signUpAction(
   redirect(`/verify-email?email=${encodeURIComponent(email)}`);
 }
 
-export async function signInAction(formData: FormData) {
-  const email = formData.get("email") as string; // TODO: validate
+export type SignInFormState = {
+  errors?: {
+    email?: string[];
+    password?: string[];
+  };
+  message?: string;
+  fields?: {
+    email?: string;
+  };
+} | null;
+
+export async function signInAction(
+  prevState: SignInFormState,
+  formData: FormData
+): Promise<SignInFormState> {
+  const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  // send to backend
-  await auth.api.signInEmail({
-    body: {
-      email,
-      password,
-    },
+  try {
+    await auth.api.signInEmail({
+      body: {
+        email,
+        password,
+      },
+    });
+  } catch (e: any) {
+    console.error("SignIn Action Error:", e);
+    return {
+      message: "Invalid credentials or verification required.",
+      fields: { email },
+    };
+  }
+
+    redirect("/");
+}
+
+export async function signOutAction() {
+  await auth.api.signOut({
+    headers: await headers(),
   });
 
   redirect("/");
 }
-
-export async function signOutAction() {
-    await auth.api.signOut({
-        headers: await headers(),
-    });
-
-    redirect("/");
-}
-// src/app/actions/auth.ts
-
-// import { redirect } from "next/navigation";
-
-// // Define the state type so your components don't error out
-// export type SignUpFormState = {
-//   message?: string;
-//   errors?: Record<string, string[]>;
-//   fields?: Record<string, any>;
-// } | null;
-
-// export async function signUpAction(prevState: any, formData: FormData) {
-//   // 1. Simulate a short "network" delay
-//   await new Promise((res) => setTimeout(res, 800));
-
-//   const email = formData.get("email") as string;
-
-//   // 2. Mock Logic: Fail if the email doesn't end in .edu
-//   if (!email.endsWith(".edu")) {
-//     return {
-//       message: "Please use a valid .edu email address.",
-//       errors: { email: ["Invalid domain"] },
-//       fields: { email }
-//     };
-//   }
-
-//   // 3. SUCCESS: Redirect to the profile page
-//   localStorage.setItem("mock_user_logged_in", "true")
-//   redirect("/profile");
-
-// }
-
-// export async function signInAction(prevState: any, formData: FormData) {
-//   await new Promise((res) => setTimeout(res, 800));
-
-//   const email = formData.get("email") as string;
-
-//   // 4. Mock Logic: Success if email contains 'test'
-//   if (email.includes("test")) {
-//     // SUCCESS: Redirect to the schools/majors page
-//     localStorage.setItem("mock_user_logged_in", "true");
-//     redirect("/school");
-//   }
-
-//   // FAIL: Return error message
-//   return {
-//     message: "Invalid credentials. Hint: use 'test' in the email.",
-//     errors: { email: ["User not found"] }
-//   };
-// }
+  

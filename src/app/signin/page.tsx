@@ -4,12 +4,15 @@ import { useActionState } from "react";
 import { Button } from "@/features/shared/components/ui/button";
 import { Input } from "@/features/shared/components/ui/input";
 import Navbar from "../nav-bar";
-import { signInAction } from "../actions/auth"; // Ensure this matches your sign-in action signature
+import { signInAction, type SignInFormState } from "../actions/auth"; // Ensure this matches your sign-in action signature
 
 export default function SignInPage() {
     // Use useActionState to mirror the Sign Up logic
     // Note: Ensure your signInAction returns a compatible state object (errors, fields, etc.)
-    const [state, action, isPending] = useActionState(signInAction, null);
+    const [state, action, isPending] = useActionState<SignInFormState, FormData>(
+        signInAction,
+        null
+    );
 
     return (
         <div>
