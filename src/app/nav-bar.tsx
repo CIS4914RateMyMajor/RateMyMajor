@@ -1,22 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link"; // Use Link for faster Next.js navigation
+import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { signOutAction } from "./actions/auth";
 
 export default function NavBar() {
-    // 1. MOCK STATE: Change this to 'true' to see the logged-in view
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { data: session, isPending } = authClient.useSession();
+    const isLoggedIn = !!session;
 
-    // Optional: Simple logic to "remember" login during your dev session
-    useEffect(() => {
-        const mockAuth = localStorage.getItem("mock_user_logged_in");
-        if (mockAuth === "true") setIsLoggedIn(true);
-    }, []);
-
-    const handleLogout = () => {
-        localStorage.removeItem("mock_user_logged_in");
-        setIsLoggedIn(false);
-        window.location.href = "/"; // Redirect to home on logout
+    const handleLogout = async () => {
+        await signOutAction();
     };
 
     return (
@@ -33,7 +26,11 @@ export default function NavBar() {
                 </a>
             )}
             <div className="flex items-center text-sm font-bold tracking-widest">
-                {!isLoggedIn ? (
+                {isPending ? (
+                    <div className="px-8 py-6 text-base border-l-6 border-black opacity-50">
+                        LOADING...
+                    </div>
+                ) : !isLoggedIn ? (
                     /* --- LOGGED OUT VIEW --- */
                     <>
                         <Link

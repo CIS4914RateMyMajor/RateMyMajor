@@ -1,14 +1,6 @@
-import { headers } from "next/headers";
-import Link from "next/link";
-import { auth } from "@/lib/auth";
-import { signOutAction } from "./actions/auth";
 import Navbar from "./nav-bar";
 
 export default async function Home() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
   return (
       <div className="min-h-screen bg-white text-black font-sans">
 
