@@ -23,7 +23,7 @@ export const auth = betterAuth({
         console.log(`[AUTH SERVER] Generating OTP for ${email}: "${otp}"`);
         console.log(`Attempting to send OTP to ${email}...`);
         const { data, error } = await resend.emails.send({
-          from: "RateMyMajor <onboarding@resend.dev>",
+          from: "RateMyMajor <ratemymajor@jeremeyang.com>",
           to: email,
           subject: "Verify your email",
           html: `<p>Your verification code is <strong>${otp}</strong>. It expires in 10 minutes.</p>`,

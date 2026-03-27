@@ -110,7 +110,7 @@ export default function VerifyEmailPage() {
             disabled={timer > 540}
             className="text-xs font-medium text-slate-500 hover:text-slate-900 disabled:opacity-50 transition-colors"
           >
-            Didn&apos;t get a code? Resend email
+            Didn&apos;t get a code? Resend email. Please wait at least 2 minutes before resending.
           </button>
         </div>
       </div>
