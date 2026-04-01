@@ -9,6 +9,8 @@ export default function NavBar() {
     const isLoggedIn = !!session;
 
     const handleLogout = async () => {
+        // Clear mock auth just in case
+        localStorage.removeItem("mock_user_logged_in");
         await signOutAction();
     };
 

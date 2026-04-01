@@ -12,12 +12,12 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState({
-    name: "", // loaded from API
-    email: "", // loaded from API
-    major: "Computer Science", // TODO: from DB
-    college: "Engineering", // TODO: from DB
-    gpa: "3.8", // TODO: from DB
-    image: null,
+    name: "", 
+    email: "", 
+    major: "", 
+    college: "", 
+    gpa: "", 
+    image: null as string | null,
     id: "",
     createdAt: "",
   });
@@ -30,9 +30,12 @@ export default function ProfilePage() {
         const serverProfile = await usersAPI.getProfile();
         setProfile((current) => ({
           ...current,
-          name: serverProfile.username || current.name,
-          email: serverProfile.email || current.email,
-          // TODO: major/college/gpa when available in API
+          name: serverProfile.username || "",
+          email: serverProfile.email || "",
+          major: serverProfile.major || "",
+          college: serverProfile.college || "",
+          gpa: serverProfile.gpa || "",
+          image: (serverProfile as any).image || null,
         }));
       } catch (err: any) {
         setError(err?.message || "Failed to load profile");
@@ -47,7 +50,12 @@ export default function ProfilePage() {
 
   const handleSave = async () => {
     try {
-      await usersAPI.updateProfile({ username: profile.name });
+      await usersAPI.updateProfile({ 
+        username: profile.name,
+        major: profile.major,
+        college: profile.college,
+        gpa: profile.gpa
+      });
       // name and email remain in state from form and API
     } catch (error) {
       console.error("Failed to save profile", error);
@@ -73,10 +81,15 @@ export default function ProfilePage() {
             {error && <p className="text-center text-red-600">{error}</p>}
 
             <div className="space-y-6">
-              {/* PROFILE PICTURE SECTION */}              <div className="flex flex-col items-center">
+              {/* PROFILE PICTURE SECTION */}
+              <div className="flex flex-col items-center">
                 <div className="relative group">
-                  <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center text-3xl font-bold text-slate-400 border-2 border-slate-200">
-                    {profile.name.charAt(0).toUpperCase()}
+                  <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center text-3xl font-bold text-slate-400 border-2 border-slate-200 overflow-hidden">
+                    {profile.image ? (
+                      <img src={profile.image} alt={profile.name} className="w-full h-full object-cover" />
+                    ) : (
+                      (profile.name.charAt(0) || "?").toUpperCase()
+                    )}
                   </div>
                   {isEditing && (
                       <div className="mt-2 text-xs text-blue-600 font-medium cursor-pointer hover:underline">

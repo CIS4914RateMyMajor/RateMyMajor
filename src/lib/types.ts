@@ -24,15 +24,21 @@ export interface UserProfile {
   username: string;
   email: string;
   major?: string;
+  college?: string;
+  gpa?: string;
   grad_year?: number;
   bio?: string;
+  image?: string | null;
 }
 
 export interface UserProfileUpdate {
   username?: string;
   major?: string;
+  college?: string;
+  gpa?: string;
   grad_year?: number;
   bio?: string;
+  image?: string | null;
 }
 
 // ============= ACADEMIC HIERARCHY =============

@@ -17,6 +17,10 @@ export const user = mysqlTable("user", {
   image: text("image"),
   userYear: int("user_year"),
   role: varchar("role", { length: 50 }),
+  major: varchar("major", { length: 255 }),
+  college: varchar("college", { length: 255 }),
+  gpa: varchar("gpa", { length: 10 }),
+  bio: text("bio"),
   createdAt: timestamp("created_at", { fsp: 3 }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { fsp: 3 })
     .defaultNow()

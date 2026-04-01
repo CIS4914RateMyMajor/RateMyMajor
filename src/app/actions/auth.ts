@@ -123,10 +123,14 @@ export async function signInAction(
 }
 
 export async function signOutAction() {
+  console.log("signOutAction: Triggering server-side sign out...");
+  const headersList = await headers();
+  
   await auth.api.signOut({
-    headers: await headers(),
+    headers: headersList,
   });
 
+  console.log("signOutAction: Sign out complete, redirecting...");
   redirect("/");
 }
   
