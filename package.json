@@ -9,6 +9,8 @@
     "lint": "eslint",
     "db:studio": "drizzle-kit studio",
     "db:push": "drizzle-kit push",
+    "db:load": "python3 scraper/db_loader.py",
+    "db:setup": "npm run db:push && npm run db:load",
     "db:example": "tsx src/db/example-db-interaction.ts"
   },
   "dependencies": {
