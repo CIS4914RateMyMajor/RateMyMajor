@@ -5,8 +5,9 @@ import {
   varchar,
   timestamp,
   text,
-  primaryKey,
   bigint,
+  index,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { user } from "./auth-schema";
 
@@ -56,9 +57,11 @@ export const reviewMajors = mysqlTable(
     reviewId: bigint("review_id", { mode: "number", unsigned: true }).references(() => reviews.id, { onDelete: "cascade" }).notNull(),
   },
   (table) => {
-    return {
-      pk: primaryKey({ columns: [table.majorId, table.reviewId] }),
-    };
+    return [
+      uniqueIndex("review_majors_major_review_unique").on(table.majorId, table.reviewId),
+      index("review_majors_major_id_idx").on(table.majorId),
+      index("review_majors_review_id_idx").on(table.reviewId),
+    ];
   }
 );
 

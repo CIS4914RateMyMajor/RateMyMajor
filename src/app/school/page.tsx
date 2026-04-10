@@ -46,7 +46,7 @@ export default function SchoolsPage() {
   }, [searchTerm, universities]);
 
   const handleUniversityClick = (uni: UniversityData) => {
-    router.push(`/major?universityId=${uni.id}`);
+    router.push(`/school/${uni.id}`);
   };
 
   return (

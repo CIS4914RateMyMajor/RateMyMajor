@@ -43,22 +43,27 @@ export interface UserProfileUpdate {
 
 // ============= ACADEMIC HIERARCHY =============
 export interface University {
-  university_id: string;
+  id: number;
   name: string;
-  location: string;
+  location: string | null;
+  department_count?: number;
+  major_count?: number;
 }
 
 export interface Department {
-  dept_id: string;
+  id: number;
   name: string;
-  university_id?: string;
+  university_id?: number;
+  major_count?: number;
 }
 
 export interface Major {
-  major_id: number;
+  id: number;
   name: string;
-  dept_id?: string;
-  description?: string;
+  type?: string | null;
+  dept_id?: number;
+  department_name?: string;
+  university_name?: string;
 }
 
 // ============= REVIEWS =============
@@ -66,6 +71,7 @@ export interface ReviewInput {
   rating: number; // 1-5
   difficulty: number; // 1-5
   comment: string;
+  major_status?: string | null;
 }
 
 export interface Review extends ReviewInput {
@@ -73,6 +79,8 @@ export interface Review extends ReviewInput {
   major_id: number;
   user_id?: string;
   username?: string;
+  major_status?: string | null;
+  review_status?: string | null;
   created_at?: string;
   updated_at?: string;
 }

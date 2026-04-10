@@ -1,5 +1,6 @@
 import { db } from "@/db/example-db-interaction";
 import { major, department, university } from "@/db/schema/schema";
+import { jsonSafe } from "@/lib/utils/json-safe";
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 
@@ -29,7 +30,7 @@ export async function GET(req: Request) {
     }
 
     const results = await query;
-    return NextResponse.json(results);
+    return NextResponse.json(jsonSafe(results));
   } catch (error) {
     console.error("Failed to fetch majors:", error);
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });

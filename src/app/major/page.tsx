@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import Navbar from "../nav-bar";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 interface MajorData {
   id: number;
@@ -114,9 +115,9 @@ function MajorsContent() {
               </div>
 
               <div className="mt-6 pt-6 border-t-4 border-black flex justify-between items-center">
-                <button className="font-black text-sm uppercase underline hover:no-underline">
+                <Link href={`/major/${major.id}`} className="font-black text-sm uppercase underline hover:no-underline">
                   View Reviews
-                </button>
+                </Link>
                 <div className="flex gap-1">
                   {[1,2,3,4,5].map(i => (
                     <div key={i} className="w-3 h-3 border-2 border-black rounded-full" />
