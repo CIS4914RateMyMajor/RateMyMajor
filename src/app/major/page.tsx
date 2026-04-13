@@ -54,12 +54,12 @@ function MajorsContent() {
   const schoolName = majors.length > 0 && universityId ? majors[0].universityName : null;
 
   return (
-    <main className="max-w-6xl mx-auto p-8">
-      <header className="mb-12 border-b-6 border-black pb-8">
-        <h1 className="text-5xl font-black tracking-tight uppercase leading-none mb-4">
+    <main className="max-w-6xl mx-auto p-4 md:p-8">
+      <header className="mb-8 md:mb-12 border-b-6 border-black pb-6 md:pb-8">
+        <h1 className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-none mb-3 md:mb-4">
           {schoolName ? `Majors at ${schoolName}` : "Explore Majors"}
         </h1>
-        <p className="text-gray-600 max-w-2xl text-lg">
+        <p className="text-gray-600 max-w-2xl text-base md:text-lg">
           {schoolName 
             ? `Viewing all ${majors.length} academic programs available at this institution.` 
             : "Search through hundreds of programs from top universities. See what real students have to say about their academic journey."}
@@ -67,11 +67,11 @@ function MajorsContent() {
       </header>
 
       {/* Search Bar */}
-      <div className="mb-12">
+      <div className="mb-8 md:mb-12">
         <input
           type="text"
           placeholder="Search majors, departments, or keywords..."
-          className="w-full p-6 text-xl border-4 border-black font-bold uppercase tracking-widest focus:bg-black focus:text-white transition-all outline-none"
+          className="w-full p-4 md:p-6 text-base md:text-xl border-4 border-black font-bold uppercase tracking-wide md:tracking-widest focus:bg-black focus:text-white transition-all outline-none"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -86,7 +86,7 @@ function MajorsContent() {
           ERROR: {error}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
           {filteredMajors.map((major) => (
             <div 
               key={major.id} 
@@ -99,7 +99,7 @@ function MajorsContent() {
                 <span className="text-gray-400 font-bold text-xs">#{major.id}</span>
               </div>
               
-              <h2 className="text-2xl font-black uppercase mb-2 leading-tight">
+              <h2 className="text-xl md:text-2xl font-black uppercase mb-2 leading-tight">
                 {major.name}
               </h2>
               

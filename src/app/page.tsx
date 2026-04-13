@@ -10,29 +10,29 @@ export default async function Home() {
         <Navbar/>
 
         {/* Hero Section */}
-        <section className="flex flex-col items-center justify-center py-16 px-8 relative">
+        <section className="flex flex-col items-center justify-center py-10 md:py-16 px-4 md:px-8 relative">
           {/* Sketch icons around the title — use your own SVGs or img tags */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-center gap-3 md:gap-6 w-full">
             {/* Left sketch icon placeholder */}
-            <div className="w-60 h-60 opacity-60">
+            <div className="hidden sm:block w-24 h-24 md:w-60 md:h-60 opacity-60">
               {/* Replace with your sketch SVG, e.g. graduation cap */}
               <img src="/art_assets/grad cap art.png" alt="" className="w-full h-full object-contain" />
             </div>
 
-            <h1 className="text-5xl font-black tracking-tight text-center leading-none uppercase">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-center leading-none uppercase">
               RATE MY MAJOR
             </h1>
 
             {/* Right sketch icon placeholder */}
-            <div className="w-40 h-40 opacity-60">
+            <div className="hidden sm:block w-20 h-20 md:w-40 md:h-40 opacity-60">
               <img src="/art_assets/brain art.png" alt="" className="w-full h-full object-contain" />
             </div>
           </div>
 
           {/* Bottom sketch icons row */}
-          <div className="flex gap-8 mt-6 opacity-60">
-            <img src="/art_assets/graph art.png" alt="" className="w-40 h-40 object-contain" />
-            <img src="/art_assets/grad cap art.png" alt="" className="w-16 h-16 object-contain" />
+          <div className="flex gap-4 md:gap-8 mt-4 md:mt-6 opacity-60">
+            <img src="/art_assets/graph art.png" alt="" className="w-20 h-20 md:w-40 md:h-40 object-contain" />
+            <img src="/art_assets/grad cap art.png" alt="" className="w-10 h-10 md:w-16 md:h-16 object-contain" />
           </div>
         </section>
 
