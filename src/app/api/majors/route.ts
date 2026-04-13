@@ -14,7 +14,9 @@ export async function GET(req: Request) {
         id: major.id,
         name: major.name,
         type: major.type,
+        departmentId: department.id,
         departmentName: department.name,
+        universityId: university.id,
         universityName: university.name,
       })
       .from(major)

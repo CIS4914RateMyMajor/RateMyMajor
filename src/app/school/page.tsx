@@ -122,7 +122,7 @@ export default function SchoolsPage() {
 
                 <div className="mt-6 pt-6 border-t-4 border-black flex justify-between items-center">
                   <button className="font-black text-sm uppercase underline hover:no-underline">
-                    Explore Majors 
+                    Explore Departments 
                   </button>
                   <div className="bg-black text-white p-1 group-hover:bg-yellow-400 group-hover:text-black transition-colors">
                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

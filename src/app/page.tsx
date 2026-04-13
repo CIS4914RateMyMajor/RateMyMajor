@@ -1,5 +1,6 @@
 import Navbar from "./nav-bar";
 import Link from "next/link";
+import HomeSearch from "./home-search";
 
 export default async function Home() {
   return (
@@ -35,29 +36,31 @@ export default async function Home() {
           </div>
         </section>
 
+        <HomeSearch />
+
         {/* Product value + quick actions */}
-        <section className="px-6 md:px-12 py-10 border-t-6 border-black">
-          <div className="max-w-5xl mx-auto border-6 border-black p-8 md:p-10 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="inline-block bg-yellow-400 text-black text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black mb-4">
+        <section className="px-6 md:px-12 pt-2 pb-10">
+          <div className="max-w-5xl mx-auto border-2 border-black p-5 md:p-6 bg-white text-center">
+            <div className="inline-block bg-yellow-400 text-black text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black mb-3">
               Why RateMyMajor
             </div>
 
-            <p className="text-lg leading-relaxed text-gray-700 max-w-3xl mx-auto">
+            <p className="text-base leading-relaxed text-gray-700 max-w-3xl mx-auto">
               RateMyMajor helps students compare majors across schools using real
               student reviews, difficulty ratings, and outcomes. Browse verified
               institutions, explore departments, and share your own experience.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 max-w-2xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 max-w-xl mx-auto">
               <Link
                 href="/school"
-                className="px-6 py-4 border-4 border-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                className="px-5 py-3 border-2 border-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
               >
                 Browse Schools
               </Link>
               <Link
                 href="/major"
-                className="px-6 py-4 border-4 border-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                className="px-5 py-3 border-2 border-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
               >
                 Explore Majors
               </Link>
