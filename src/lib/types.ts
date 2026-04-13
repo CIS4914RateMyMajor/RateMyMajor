@@ -68,8 +68,13 @@ export interface Major {
 
 // ============= REVIEWS =============
 export interface ReviewInput {
-  rating: number; // 1-5
   difficulty: number; // 1-5
+  content: number; // 1-5
+  professors: number; // 1-5
+  advisors: number; // 1-5
+  outcomes: number; // 0-10
+  regret_percentage: number; // 0-100
+  reviewer_gpa?: string;
   comment: string;
   major_status?: string | null;
 }
@@ -79,6 +84,7 @@ export interface Review extends ReviewInput {
   major_id: number;
   user_id?: string;
   username?: string;
+  rating?: number;
   major_status?: string | null;
   review_status?: string | null;
   created_at?: string;

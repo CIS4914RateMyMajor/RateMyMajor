@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Navbar from "@/app/nav-bar";
 import { reviewsAPI } from "@/lib/reviews";
 import { authClient } from "@/lib/auth-client";
+import { usersAPI } from "@/lib/users";
 
 type MajorDetail = {
   id: number;
@@ -17,6 +18,10 @@ type MajorDetail = {
   review_count: number;
   avg_rating: number;
   avg_difficulty: number;
+  avg_outcomes: number;
+  avg_regret_percentage: number;
+  avg_reviewer_gpa: number;
+  dropout_rate: number;
 };
 
 type MajorReview = {
@@ -26,6 +31,12 @@ type MajorReview = {
   username: string;
   rating: number;
   difficulty: number;
+  content: number;
+  professors: number;
+  advisors: number;
+  outcomes: number;
+  regret_percentage: number;
+  reviewer_gpa: string | null;
   comment: string;
   major_status: string | null;
   review_status: string | null;
@@ -41,12 +52,18 @@ export default function MajorDetailPage() {
 
   const [major, setMajor] = useState<MajorDetail | null>(null);
   const [reviews, setReviews] = useState<MajorReview[]>([]);
+  const [accountGpa, setAccountGpa] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [rating, setRating] = useState(5);
   const [difficulty, setDifficulty] = useState(3);
+  const [content, setContent] = useState(3);
+  const [professors, setProfessors] = useState(3);
+  const [advisors, setAdvisors] = useState(3);
+  const [outcomes, setOutcomes] = useState(7);
+  const [regretPercentage, setRegretPercentage] = useState(20);
+  const [reviewerGpaInput, setReviewerGpaInput] = useState("");
   const [comment, setComment] = useState("");
   const [majorStatus, setMajorStatus] = useState("Current Student");
 
@@ -85,7 +102,28 @@ export default function MajorDetailPage() {
     loadPage();
   }, [loadPage]);
 
-  const canSubmit = useMemo(() => comment.trim().length > 0, [comment]);
+  useEffect(() => {
+    async function loadProfileGpa() {
+      if (!session) {
+        setAccountGpa("");
+        return;
+      }
+
+      try {
+        const profile = await usersAPI.getProfile();
+        setAccountGpa((profile.gpa || "").trim());
+      } catch {
+        setAccountGpa("");
+      }
+    }
+
+    loadProfileGpa();
+  }, [session]);
+
+  const canSubmit = useMemo(() => {
+    const hasGpa = Boolean(accountGpa || reviewerGpaInput.trim());
+    return comment.trim().length > 0 && hasGpa;
+  }, [comment, accountGpa, reviewerGpaInput]);
 
   async function onSubmitReview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -97,13 +135,19 @@ export default function MajorDetailPage() {
       setError(null);
 
       await reviewsAPI.submitReview(majorId, {
-        rating,
         difficulty,
+        content,
+        professors,
+        advisors,
+        outcomes,
+        regret_percentage: regretPercentage,
+        reviewer_gpa: accountGpa || reviewerGpaInput.trim(),
         comment: comment.trim(),
         major_status: majorStatus,
       });
 
       setComment("");
+      setReviewerGpaInput("");
       await loadPage();
     } catch (err: any) {
       setError(err?.message || "Failed to submit review");
@@ -147,16 +191,31 @@ export default function MajorDetailPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="border-2 border-black p-3 text-center">
-                  <p className="text-2xl font-black">{major.review_count}</p>
-                  <p className="text-[10px] font-black uppercase tracking-widest">Reviews</p>
+                  <p className="text-2xl font-black">{major.avg_reviewer_gpa}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Avg GPA</p>
                 </div>
                 <div className="border-2 border-black p-3 text-center">
                   <p className="text-2xl font-black">{major.avg_rating}</p>
-                  <p className="text-[10px] font-black uppercase tracking-widest">Avg Rating</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Composite Score</p>
                 </div>
                 <div className="border-2 border-black p-3 text-center">
-                  <p className="text-2xl font-black">{major.avg_difficulty}</p>
-                  <p className="text-[10px] font-black uppercase tracking-widest">Avg Difficulty</p>
+                  <p className="text-2xl font-black">{major.avg_outcomes}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Outcomes / 10</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+                <div className="border-2 border-black p-3 text-center">
+                  <p className="text-2xl font-black">{major.avg_regret_percentage}%</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Avg Regret</p>
+                </div>
+                <div className="border-2 border-black p-3 text-center">
+                  <p className="text-2xl font-black">{major.dropout_rate}%</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Drop Out Rate</p>
+                </div>
+                <div className="border-2 border-black p-3 text-center">
+                  <p className="text-2xl font-black">{major.review_count}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Reviews</p>
                 </div>
               </div>
             </section>
@@ -170,19 +229,7 @@ export default function MajorDetailPage() {
                 </div>
               ) : (
                 <form onSubmit={onSubmitReview} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
-                      Rating (1-5)
-                      <input
-                        type="number"
-                        min={1}
-                        max={5}
-                        value={rating}
-                        onChange={(e) => setRating(Number(e.target.value))}
-                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
-                      />
-                    </label>
-
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
                       Difficulty (1-5)
                       <input
@@ -191,6 +238,66 @@ export default function MajorDetailPage() {
                         max={5}
                         value={difficulty}
                         onChange={(e) => setDifficulty(Number(e.target.value))}
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
+                      />
+                    </label>
+
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
+                      Content (1-5)
+                      <input
+                        type="number"
+                        min={1}
+                        max={5}
+                        value={content}
+                        onChange={(e) => setContent(Number(e.target.value))}
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
+                      />
+                    </label>
+
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
+                      Professors (1-5)
+                      <input
+                        type="number"
+                        min={1}
+                        max={5}
+                        value={professors}
+                        onChange={(e) => setProfessors(Number(e.target.value))}
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
+                      />
+                    </label>
+
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
+                      Advisors (1-5)
+                      <input
+                        type="number"
+                        min={1}
+                        max={5}
+                        value={advisors}
+                        onChange={(e) => setAdvisors(Number(e.target.value))}
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
+                      />
+                    </label>
+
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
+                      Outcomes (0-10)
+                      <input
+                        type="number"
+                        min={0}
+                        max={10}
+                        value={outcomes}
+                        onChange={(e) => setOutcomes(Number(e.target.value))}
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
+                      />
+                    </label>
+
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
+                      Regret % (0-100)
+                      <input
+                        type="number"
+                        min={0}
+                        max={100}
+                        value={regretPercentage}
+                        onChange={(e) => setRegretPercentage(Number(e.target.value))}
                         className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
                       />
                     </label>
@@ -208,6 +315,22 @@ export default function MajorDetailPage() {
                       </select>
                     </label>
                   </div>
+
+                  {!accountGpa && (
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
+                      Your GPA (required)
+                      <input
+                        type="number"
+                        min={0}
+                        max={5}
+                        step={0.01}
+                        value={reviewerGpaInput}
+                        onChange={(e) => setReviewerGpaInput(e.target.value)}
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
+                        placeholder="e.g. 3.40"
+                      />
+                    </label>
+                  )}
 
                   <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
                     Comment
@@ -256,14 +379,46 @@ export default function MajorDetailPage() {
                         </p>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        <div className="border-2 border-black p-2 text-center">
-                          <p className="text-xl font-black">{review.rating}/5</p>
-                          <p className="text-[10px] font-black uppercase tracking-widest">Rating</p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                        <div className="md:col-span-2 space-y-3">
+                          <div className="border-2 border-black p-3 text-center">
+                            <p className="text-3xl font-black">{review.rating}/5</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest">Overall Review</p>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="border-2 border-black p-2 text-center">
+                              <p className="text-base font-black">{review.difficulty}/5</p>
+                              <p className="text-[10px] font-black uppercase tracking-widest">Difficulty</p>
+                            </div>
+                            <div className="border-2 border-black p-2 text-center">
+                              <p className="text-base font-black">{review.content}/5</p>
+                              <p className="text-[10px] font-black uppercase tracking-widest">Content</p>
+                            </div>
+                            <div className="border-2 border-black p-2 text-center">
+                              <p className="text-base font-black">{review.professors}/5</p>
+                              <p className="text-[10px] font-black uppercase tracking-widest">Professors</p>
+                            </div>
+                            <div className="border-2 border-black p-2 text-center">
+                              <p className="text-base font-black">{review.advisors}/5</p>
+                              <p className="text-[10px] font-black uppercase tracking-widest">Advisors</p>
+                            </div>
+                          </div>
                         </div>
-                        <div className="border-2 border-black p-2 text-center">
-                          <p className="text-xl font-black">{review.difficulty}/5</p>
-                          <p className="text-[10px] font-black uppercase tracking-widest">Difficulty</p>
+
+                        <div className="space-y-2">
+                          <div className="border-2 border-black p-2 text-center">
+                            <p className="text-base font-black">{review.outcomes}/10</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest">Outcomes</p>
+                          </div>
+                          <div className="border-2 border-black p-2 text-center">
+                            <p className="text-base font-black">{review.regret_percentage}%</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest">Regret</p>
+                          </div>
+                          <div className="border-2 border-black p-2 text-center">
+                            <p className="text-base font-black">{review.reviewer_gpa || "N/A"}</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest">GPA</p>
+                          </div>
                         </div>
                       </div>
 

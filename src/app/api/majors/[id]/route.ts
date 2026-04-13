@@ -26,8 +26,12 @@ export async function GET(
         university_id: university.id,
         university_name: university.name,
         review_count: sql<number>`count(distinct ${reviews.id})`,
-        avg_rating: sql<number>`coalesce(round(avg(${reviews.rating}), 2), 0)`,
+        avg_rating: sql<number>`coalesce(round(avg((${reviews.difficulty} + ${reviews.contentScore} + ${reviews.professorsScore} + ${reviews.advisorsScore}) / 4), 2), 0)`,
         avg_difficulty: sql<number>`coalesce(round(avg(${reviews.difficulty}), 2), 0)`,
+        avg_outcomes: sql<number>`coalesce(round(avg(${reviews.outcomesScore}), 2), 0)`,
+        avg_regret_percentage: sql<number>`coalesce(round(avg(${reviews.regretPercentage}), 2), 0)`,
+        avg_reviewer_gpa: sql<number>`coalesce(round(avg(cast(${reviews.reviewerGpa} as decimal(4,2))), 2), 0)`,
+        dropout_rate: sql<number>`coalesce(round((sum(case when ${reviews.majorStatus} = 'Switched Out' then 1 else 0 end) / nullif(count(distinct ${reviews.id}), 0)) * 100, 2), 0)`,
       })
       .from(major)
       .innerJoin(department, eq(major.departmentId, department.id))

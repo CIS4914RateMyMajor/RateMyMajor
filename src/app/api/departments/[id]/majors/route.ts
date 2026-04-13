@@ -22,7 +22,7 @@ export async function GET(
         name: major.name,
         type: major.type,
         department_name: department.name,
-        avg_rating: sql<number>`coalesce(round(avg(${reviews.rating}), 2), 0)`,
+        avg_rating: sql<number>`coalesce(round(avg((${reviews.difficulty} + ${reviews.contentScore} + ${reviews.professorsScore} + ${reviews.advisorsScore}) / 4), 2), 0)`,
       })
       .from(major)
       .innerJoin(department, eq(major.departmentId, department.id))
