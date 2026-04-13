@@ -66,35 +66,81 @@ export default function SchoolDetailPage() {
   return (
     <div className="min-h-screen bg-white text-black font-sans">
       <Navbar />
-      <main className="max-w-5xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-6xl mx-auto p-8">
         {loading ? (
-          <p className="font-bold">Loading school...</p>
+          <div className="flex justify-center items-center py-20">
+            <span className="text-2xl font-black animate-pulse uppercase">LOADING SCHOOL...</span>
+          </div>
         ) : error ? (
-          <div className="border border-red-500 bg-red-50 p-4 text-red-700">{error}</div>
+          <div className="bg-red-50 border-4 border-red-500 p-8 text-red-700 font-bold">
+            ERROR: {error}
+          </div>
         ) : !university ? (
-          <div className="border border-black p-4">School not found.</div>
+          <div className="text-center py-20 border-6 border-dashed border-gray-300">
+            <p className="text-2xl font-black text-gray-400 uppercase tracking-widest">
+              School not found
+            </p>
+          </div>
         ) : (
           <>
-            <section className="border border-black p-4">
-              <h1 className="text-2xl font-bold">{university.name}</h1>
-              <p className="text-sm">{university.location || "Location unavailable"}</p>
-            </section>
+            <header className="mb-12 border-b-6 border-black pb-8">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <h1 className="text-5xl font-black tracking-tight uppercase leading-none mb-4">
+                    {university.name}
+                  </h1>
+                  <p className="text-gray-600 max-w-2xl text-lg">
+                    {university.location || "Location unavailable"}
+                  </p>
+                </div>
+                <div className="border-4 border-black px-4 py-3 text-center min-w-[120px]">
+                  <p className="text-3xl font-black">{departments.length}</p>
+                  <p className="text-xs font-black uppercase tracking-widest">Departments</p>
+                </div>
+              </div>
+            </header>
 
-            <section className="border border-black p-4">
-              <h2 className="text-xl font-semibold mb-3">Departments (placeholder UI)</h2>
+            <section>
+              <h2 className="text-2xl font-black uppercase tracking-tight mb-6">Departments</h2>
               {departments.length === 0 ? (
-                <p className="text-sm">No departments found.</p>
+                <div className="text-center py-20 border-6 border-dashed border-gray-300">
+                  <p className="text-2xl font-black text-gray-400 uppercase tracking-widest">
+                    No departments found
+                  </p>
+                </div>
               ) : (
-                <ul className="space-y-2">
+                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {departments.map((dept) => (
-                    <li key={dept.id} className="border border-gray-300 p-3 flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">{dept.name}</p>
-                        <p className="text-xs text-gray-500">Majors: {dept.major_count}</p>
+                    <li
+                      key={dept.id}
+                      className="border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <span className="bg-yellow-400 text-black text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black">
+                          DEPARTMENT
+                        </span>
+                        <span className="text-gray-400 font-bold text-xs">#{dept.id}</span>
                       </div>
-                      <Link href={`/department/${dept.id}`} className="underline text-sm">
-                        View majors
-                      </Link>
+
+                      <h3 className="text-2xl font-black uppercase mb-4 leading-tight min-h-[4rem]">
+                        {dept.name}
+                      </h3>
+
+                      <div className="border-2 border-black p-3 text-center mb-6">
+                        <p className="text-2xl font-black">{dept.major_count}</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest">Majors</p>
+                      </div>
+
+                      <div className="pt-4 border-t-4 border-black flex justify-between items-center">
+                        <Link href={`/department/${dept.id}`} className="font-black text-sm uppercase underline hover:no-underline">
+                          Explore Majors
+                        </Link>
+                        <div className="bg-black text-white p-1">
+                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 15L15 5M15 5H7M15 5V13" stroke="currentColor" strokeWidth="3" strokeLinecap="square"/>
+                          </svg>
+                        </div>
+                      </div>
                     </li>
                   ))}
                 </ul>

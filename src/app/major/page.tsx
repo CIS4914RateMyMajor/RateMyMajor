@@ -90,11 +90,11 @@ function MajorsContent() {
           {filteredMajors.map((major) => (
             <div 
               key={major.id} 
-              className="border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+              className="border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none group"
             >
               <div className="flex justify-between items-start mb-4">
-                <span className="bg-black text-white text-xs font-black px-3 py-1 uppercase tracking-widest">
-                  {major.type}
+                <span className="bg-black text-white text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black">
+                  {major.type || "MAJOR"}
                 </span>
                 <span className="text-gray-400 font-bold text-xs">#{major.id}</span>
               </div>
@@ -118,10 +118,10 @@ function MajorsContent() {
                 <Link href={`/major/${major.id}`} className="font-black text-sm uppercase underline hover:no-underline">
                   View Reviews
                 </Link>
-                <div className="flex gap-1">
-                  {[1,2,3,4,5].map(i => (
-                    <div key={i} className="w-3 h-3 border-2 border-black rounded-full" />
-                  ))}
+                <div className="bg-black text-white p-1 group-hover:bg-yellow-400 group-hover:text-black transition-colors">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 15L15 5M15 5H7M15 5V13" stroke="currentColor" strokeWidth="3" strokeLinecap="square"/>
+                  </svg>
                 </div>
               </div>
             </div>

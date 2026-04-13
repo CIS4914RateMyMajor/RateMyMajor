@@ -116,36 +116,62 @@ export default function MajorDetailPage() {
     <div className="min-h-screen bg-white text-black font-sans">
       <Navbar />
 
-      <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
+      <main className="max-w-6xl mx-auto p-8 space-y-8">
         {isLoading ? (
-          <p className="text-lg font-bold">Loading major page...</p>
+          <div className="flex justify-center items-center py-20">
+            <span className="text-2xl font-black animate-pulse uppercase">LOADING MAJOR...</span>
+          </div>
         ) : error ? (
-          <div className="border-2 border-red-500 bg-red-50 p-4 text-red-700">{error}</div>
+          <div className="bg-red-50 border-4 border-red-500 p-8 text-red-700 font-bold">
+            ERROR: {error}
+          </div>
         ) : !major ? (
-          <div className="border-2 border-black p-4">Major not found.</div>
+          <div className="text-center py-20 border-6 border-dashed border-gray-300">
+            <p className="text-2xl font-black text-gray-400 uppercase tracking-widest">
+              Major not found
+            </p>
+          </div>
         ) : (
           <>
-            <section className="border-2 border-black p-4 space-y-2">
-              <h1 className="text-3xl font-bold">{major.name}</h1>
-              <p className="text-sm">Type: {major.type || "N/A"}</p>
-              <p className="text-sm">Department: {major.department_name}</p>
-              <p className="text-sm">University: {major.university_name}</p>
-              <div className="pt-2 text-sm space-y-1">
-                <p>Reviews: {major.review_count}</p>
-                <p>Average Rating: {major.avg_rating}</p>
-                <p>Average Difficulty: {major.avg_difficulty}</p>
+            <section className="border-6 border-black p-6 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+              <div className="flex justify-between items-start gap-3 mb-4">
+                <span className="bg-black text-white text-xs font-black px-3 py-1 uppercase tracking-widest">
+                  {major.type || "MAJOR"}
+                </span>
+                <span className="text-gray-400 font-bold text-xs">#{major.id}</span>
+              </div>
+
+              <h1 className="text-4xl font-black uppercase leading-tight mb-3">{major.name}</h1>
+              <p className="font-bold text-sm uppercase tracking-wider text-gray-500">{major.department_name}</p>
+              <p className="font-bold text-xs text-gray-400 mb-6">{major.university_name}</p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="border-2 border-black p-3 text-center">
+                  <p className="text-2xl font-black">{major.review_count}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Reviews</p>
+                </div>
+                <div className="border-2 border-black p-3 text-center">
+                  <p className="text-2xl font-black">{major.avg_rating}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Avg Rating</p>
+                </div>
+                <div className="border-2 border-black p-3 text-center">
+                  <p className="text-2xl font-black">{major.avg_difficulty}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest">Avg Difficulty</p>
+                </div>
               </div>
             </section>
 
-            <section className="border-2 border-black p-4">
-              <h2 className="text-xl font-semibold mb-4">Write a review (placeholder UI)</h2>
+            <section className="border-6 border-black p-6 bg-white">
+              <h2 className="text-2xl font-black uppercase tracking-tight mb-6">Write a review</h2>
 
               {!session ? (
-                <p className="text-sm">Sign in to submit a review.</p>
+                <div className="border-2 border-black p-4 text-sm font-bold uppercase tracking-wide">
+                  Sign in to submit a review.
+                </div>
               ) : (
-                <form onSubmit={onSubmitReview} className="space-y-3">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <label className="flex flex-col gap-1 text-sm">
+                <form onSubmit={onSubmitReview} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
                       Rating (1-5)
                       <input
                         type="number"
@@ -153,11 +179,11 @@ export default function MajorDetailPage() {
                         max={5}
                         value={rating}
                         onChange={(e) => setRating(Number(e.target.value))}
-                        className="border border-black p-2"
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
                       />
                     </label>
 
-                    <label className="flex flex-col gap-1 text-sm">
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
                       Difficulty (1-5)
                       <input
                         type="number"
@@ -165,16 +191,16 @@ export default function MajorDetailPage() {
                         max={5}
                         value={difficulty}
                         onChange={(e) => setDifficulty(Number(e.target.value))}
-                        className="border border-black p-2"
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
                       />
                     </label>
 
-                    <label className="flex flex-col gap-1 text-sm">
+                    <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
                       Major status
                       <select
                         value={majorStatus}
                         onChange={(e) => setMajorStatus(e.target.value)}
-                        className="border border-black p-2"
+                        className="w-full p-3 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
                       >
                         <option>Current Student</option>
                         <option>Graduated</option>
@@ -183,13 +209,13 @@ export default function MajorDetailPage() {
                     </label>
                   </div>
 
-                  <label className="flex flex-col gap-1 text-sm">
+                  <label className="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-gray-500">
                     Comment
                     <textarea
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
                       rows={4}
-                      className="border border-black p-2"
+                      className="w-full p-4 border-2 border-black font-bold text-black outline-none focus:bg-black focus:text-white transition-colors"
                       placeholder="Describe your experience in this major"
                     />
                   </label>
@@ -197,7 +223,7 @@ export default function MajorDetailPage() {
                   <button
                     type="submit"
                     disabled={!canSubmit || isSubmitting}
-                    className="border border-black px-4 py-2 disabled:opacity-50"
+                    className="px-6 py-3 border-4 border-black font-black uppercase hover:bg-black hover:text-white transition-colors disabled:opacity-50"
                   >
                     {isSubmitting ? "Submitting..." : "Submit review"}
                   </button>
@@ -205,26 +231,49 @@ export default function MajorDetailPage() {
               )}
             </section>
 
-            <section className="border-2 border-black p-4">
-              <h2 className="text-xl font-semibold mb-4">Reviews</h2>
+            <section>
+              <h2 className="text-2xl font-black uppercase tracking-tight mb-6">Reviews</h2>
 
               {reviews.length === 0 ? (
-                <p className="text-sm">No reviews yet.</p>
+                <div className="text-center py-16 border-6 border-dashed border-gray-300">
+                  <p className="text-xl font-black text-gray-400 uppercase tracking-widest">
+                    No reviews yet
+                  </p>
+                </div>
               ) : (
-                <ul className="space-y-3">
+                <ul className="space-y-6">
                   {reviews.map((review) => (
-                    <li key={review.review_id} className="border border-gray-300 p-3 space-y-1">
-                      <p className="text-sm font-semibold">{review.username}</p>
-                      <p className="text-sm">
-                        Rating: {review.rating} / 5 · Difficulty: {review.difficulty} / 5
-                      </p>
-                      {review.major_status && <p className="text-xs">Status: {review.major_status}</p>}
-                      <p className="text-sm">{review.comment}</p>
-                      <p className="text-xs text-gray-500">
-                        {review.created_at
-                          ? new Date(review.created_at).toLocaleString()
-                          : "Date unavailable"}
-                      </p>
+                    <li
+                      key={review.review_id}
+                      className="border-6 border-black p-6 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-sm font-black uppercase tracking-wider">{review.username}</p>
+                        <p className="text-xs text-gray-500 font-bold">
+                          {review.created_at
+                            ? new Date(review.created_at).toLocaleDateString()
+                            : "Date unavailable"}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 mb-4">
+                        <div className="border-2 border-black p-2 text-center">
+                          <p className="text-xl font-black">{review.rating}/5</p>
+                          <p className="text-[10px] font-black uppercase tracking-widest">Rating</p>
+                        </div>
+                        <div className="border-2 border-black p-2 text-center">
+                          <p className="text-xl font-black">{review.difficulty}/5</p>
+                          <p className="text-[10px] font-black uppercase tracking-widest">Difficulty</p>
+                        </div>
+                      </div>
+
+                      {review.major_status && (
+                        <p className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2">
+                          Status: {review.major_status}
+                        </p>
+                      )}
+
+                      <p className="text-sm leading-relaxed">{review.comment}</p>
                     </li>
                   ))}
                 </ul>

@@ -1,8 +1,8 @@
 import { db } from "@/db/example-db-interaction";
-import { major, department } from "@/db/schema/schema";
+import { major, department, reviewMajors, reviews } from "@/db/schema/schema";
 import { jsonSafe } from "@/lib/utils/json-safe";
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 export async function GET(
   req: Request,
@@ -22,10 +22,14 @@ export async function GET(
         name: major.name,
         type: major.type,
         department_name: department.name,
+        avg_rating: sql<number>`coalesce(round(avg(${reviews.rating}), 2), 0)`,
       })
       .from(major)
       .innerJoin(department, eq(major.departmentId, department.id))
-      .where(eq(major.departmentId, deptId));
+      .leftJoin(reviewMajors, eq(reviewMajors.majorId, major.id))
+      .leftJoin(reviews, eq(reviewMajors.reviewId, reviews.id))
+      .where(eq(major.departmentId, deptId))
+      .groupBy(major.id, department.name);
 
     return NextResponse.json(jsonSafe(results));
   } catch (error) {

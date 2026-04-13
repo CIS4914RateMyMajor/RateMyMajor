@@ -1,16 +1,48 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { signOutAction } from "./actions/auth";
 
 export default function NavBar() {
-  const { data: session, isPending } = authClient.useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [session, setSession] = useState<any>(null);
+  const [isPending, setIsPending] = useState(true);
+
+  const syncSession = useCallback(async () => {
+    setIsPending(true);
+    try {
+      const result = await authClient.getSession();
+      setSession(result?.data ?? null);
+    } finally {
+      setIsPending(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    syncSession();
+  }, [pathname, syncSession]);
+
+  useEffect(() => {
+    const onFocus = () => {
+      syncSession();
+    };
+
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [syncSession]);
+
   const isLoggedIn = !!session;
 
   const handleLogout = async () => {
-    localStorage.removeItem("mock_user_logged_in");
-    await signOutAction();
+    await authClient.signOut();
+    await syncSession();
+    router.replace("/");
+    router.refresh();
+    window.location.reload();
   };
 
   const linkClass = "px-8 py-6 text-base border-r-6 border-black hover:bg-black hover:text-white transition-colors uppercase cursor-pointer";

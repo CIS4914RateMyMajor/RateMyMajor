@@ -1,4 +1,5 @@
 import Navbar from "./nav-bar";
+import Link from "next/link";
 
 export default async function Home() {
   return (
@@ -34,30 +35,34 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Two-column text section */}
-        <section className="grid grid-cols-2 gap-8 px-12 py-8 border-t-6 border-black">
-          <p className="text-sm leading-relaxed text-gray-700">
-            Lorem ipsum és un text de farciment usat per la indústria de la tipografia i la impremta.
-            Lorem ipsum ha estat el text estàndard de la indústria des de l'any 1500, quan un impressor
-            desconegut va fer servir una galerada de text i la va mesclar per crear un llibre de mostres
-            tipogràfiques. No només ha sobreviscut cinc segles, sinó que ha fet el salt cap a la creació.
-          </p>
-          <p className="text-sm leading-relaxed text-gray-700 text-right">
-            Lorem ipsum és un text de farciment usat per la indústria de la tipografia i la impremta.
-            Lorem ipsum ha estat el text estàndard de la indústria des de l'any 1500, quan un impressor
-            desconegut va fer servir una galerada de text i la va mesclar per crear un llibre de mostres
-            tipogràfiques. No només ha sobreviscut cinc segles, sinó que ha fet el salt cap a la creació.
-          </p>
-        </section>
+        {/* Product value + quick actions */}
+        <section className="px-6 md:px-12 py-10 border-t-6 border-black">
+          <div className="max-w-5xl mx-auto border-6 border-black p-8 md:p-10 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="inline-block bg-yellow-400 text-black text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black mb-4">
+              Why RateMyMajor
+            </div>
 
-        {/* Full-width student photo */}
-        <section className="w-full">
-          <img
-              src="/images/students.jpg"
-              alt="Students in a classroom"
-              className="w-full object-cover"
-              style={{ maxHeight: "340px" }}
-          />
+            <p className="text-lg leading-relaxed text-gray-700 max-w-3xl mx-auto">
+              RateMyMajor helps students compare majors across schools using real
+              student reviews, difficulty ratings, and outcomes. Browse verified
+              institutions, explore departments, and share your own experience.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 max-w-2xl mx-auto">
+              <Link
+                href="/school"
+                className="px-6 py-4 border-4 border-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+              >
+                Browse Schools
+              </Link>
+              <Link
+                href="/major"
+                className="px-6 py-4 border-4 border-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+              >
+                Explore Majors
+              </Link>
+            </div>
+          </div>
         </section>
 
       </div>

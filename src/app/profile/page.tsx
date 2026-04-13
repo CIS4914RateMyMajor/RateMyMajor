@@ -1,25 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../nav-bar.tsx";
+import Navbar from "../nav-bar";
 import { Button } from "@/features/shared/components/ui/button";
 import { Input } from "@/features/shared/components/ui/input";
 import { usersAPI } from "@/lib/users";
 
 export default function ProfilePage() {
-  // 1. MOCK DATA STATE
-  const [isEditing, setIsEditing] = useState(true); // Set to true initially as requested
+  const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [profile, setProfile] = useState({
-    name: "", 
-    email: "", 
-    major: "", 
-    college: "", 
-    gpa: "", 
+    name: "",
+    email: "",
+    major: "",
+    college: "",
+    gpa: "",
     image: null as string | null,
-    id: "",
-    createdAt: "",
   });
 
   useEffect(() => {
@@ -50,17 +49,22 @@ export default function ProfilePage() {
 
   const handleSave = async () => {
     try {
-      await usersAPI.updateProfile({ 
+      setIsSaving(true);
+      setError(null);
+      setSaveMessage(null);
+
+      await usersAPI.updateProfile({
         username: profile.name,
         major: profile.major,
         college: profile.college,
-        gpa: profile.gpa
+        gpa: profile.gpa,
       });
-      // name and email remain in state from form and API
-    } catch (error) {
-      console.error("Failed to save profile", error);
-    } finally {
       setIsEditing(false);
+      setSaveMessage("Profile updated successfully.");
+    } catch (err: any) {
+      setError(err?.message || "Failed to save profile");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -69,107 +73,124 @@ export default function ProfilePage() {
   };
 
   return (
-      <div>
-        <Navbar />
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-64px)] p-6 bg-slate-50">
-          <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md border border-slate-200">
-            <h1 className="text-2xl font-bold mb-6 text-slate-900 text-center">
-              {isEditing ? "Edit Profile" : "User Profile"}
-            </h1>
+    <div className="min-h-screen bg-white text-black font-sans">
+      <Navbar />
+      <main className="max-w-6xl mx-auto p-8 space-y-8">
+        <header className="border-b-6 border-black pb-8">
+          <h1 className="text-5xl font-black tracking-tight uppercase leading-none mb-4">
+            {isEditing ? "Edit Profile" : "User Profile"}
+          </h1>
+          <p className="text-gray-600 max-w-2xl text-lg">
+            Keep your major, college, and academic info up to date.
+          </p>
+        </header>
 
-            {isLoading && <p className="text-center text-slate-500">Loading profile...</p>}
-            {error && <p className="text-center text-red-600">{error}</p>}
+        {isLoading ? (
+          <div className="flex justify-center items-center py-20">
+            <span className="text-2xl font-black animate-pulse uppercase">LOADING PROFILE...</span>
+          </div>
+        ) : (
+          <section className="border-6 border-black p-6 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            {error && (
+              <div className="bg-red-50 border-4 border-red-500 p-4 text-red-700 font-bold mb-6">
+                ERROR: {error}
+              </div>
+            )}
+            {saveMessage && (
+              <div className="bg-green-50 border-4 border-green-600 p-4 text-green-800 font-bold mb-6 uppercase tracking-wide">
+                {saveMessage}
+              </div>
+            )}
 
-            <div className="space-y-6">
-              {/* PROFILE PICTURE SECTION */}
-              <div className="flex flex-col items-center">
-                <div className="relative group">
-                  <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center text-3xl font-bold text-slate-400 border-2 border-slate-200 overflow-hidden">
-                    {profile.image ? (
-                      <img src={profile.image} alt={profile.name} className="w-full h-full object-cover" />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="border-4 border-black p-6 h-fit">
+                <div className="w-24 h-24 rounded-full border-4 border-black flex items-center justify-center text-3xl font-black overflow-hidden mx-auto">
+                  {profile.image ? (
+                    <img src={profile.image} alt={profile.name} className="w-full h-full object-cover" />
+                  ) : (
+                    (profile.name.charAt(0) || "?").toUpperCase()
+                  )}
+                </div>
+                <h2 className="text-xl font-black uppercase mt-4 text-center">{profile.name || "Unnamed User"}</h2>
+                <p className="text-xs font-bold text-gray-500 mt-1 text-center break-all">{profile.email}</p>
+              </div>
+
+              <div className="lg:col-span-2 space-y-5">
+                <div>
+                  <label className="text-xs font-black uppercase tracking-widest text-gray-500">Name</label>
+                  {isEditing ? (
+                    <Input name="name" value={profile.name} onChange={handleChange} className="mt-2 border-2 border-black rounded-none" />
+                  ) : (
+                    <p className="mt-2 border-2 border-black p-3 font-bold">{profile.name || "-"}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="text-xs font-black uppercase tracking-widest text-gray-500">Email (Private)</label>
+                  <p className="mt-2 border-2 border-black p-3 font-bold bg-gray-50">{profile.email || "-"}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-black uppercase tracking-widest text-gray-500">Major</label>
+                    {isEditing ? (
+                      <Input name="major" value={profile.major} onChange={handleChange} className="mt-2 border-2 border-black rounded-none" />
                     ) : (
-                      (profile.name.charAt(0) || "?").toUpperCase()
+                      <p className="mt-2 border-2 border-black p-3 font-bold">{profile.major || "-"}</p>
                     )}
                   </div>
-                  {isEditing && (
-                      <div className="mt-2 text-xs text-blue-600 font-medium cursor-pointer hover:underline">
-                        Change Photo
-                      </div>
-                  )}
-                </div>
-                {!isEditing && (
-                    <>
-                      <h2 className="text-xl font-semibold text-slate-800 mt-4">{profile.name}</h2>
-                      <p className="text-slate-500">{profile.email}</p>
-                    </>
-                )}
-              </div>
 
-              {/* FORM FIELDS */}
-              <div className="border-t border-slate-100 pt-6 space-y-4">
-                {/* Name (Editable) */}
+                  <div>
+                    <label className="text-xs font-black uppercase tracking-widest text-gray-500">College</label>
+                    {isEditing ? (
+                      <Input name="college" value={profile.college} onChange={handleChange} className="mt-2 border-2 border-black rounded-none" />
+                    ) : (
+                      <p className="mt-2 border-2 border-black p-3 font-bold">{profile.college || "-"}</p>
+                    )}
+                  </div>
+                </div>
+
                 <div>
-                  <label className="text-xs font-bold text-slate-400 uppercase">Name</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-gray-500">GPA</label>
                   {isEditing ? (
-                      <Input name="name" value={profile.name} onChange={handleChange} className="mt-1" />
+                    <Input
+                      name="gpa"
+                      type="number"
+                      step="0.1"
+                      value={profile.gpa}
+                      onChange={handleChange}
+                      className="mt-2 border-2 border-black rounded-none"
+                    />
                   ) : (
-                      <p className="text-sm text-slate-700 mt-1">{profile.name}</p>
+                    <p className="mt-2 border-2 border-black p-3 font-bold">{profile.gpa || "-"}</p>
                   )}
                 </div>
 
-                {/* Email (Read Only) */}
-                <div>
-                  <label className="text-xs font-bold text-slate-400 uppercase">Email (Private)</label>
-                  <p className="text-sm text-slate-500 mt-1 italic">{profile.email}</p>
-                </div>
-
-                {/* Major (Editable) */}
-                <div>
-                  <label className="text-xs font-bold text-slate-400 uppercase">Major</label>
+                <div className="pt-2">
                   {isEditing ? (
-                      <Input name="major" value={profile.major} onChange={handleChange} className="mt-1" />
-                  ) : (
-                      <p className="text-sm text-slate-700 mt-1">{profile.major}</p>
-                  )}
-                </div>
-
-                {/* College (Editable) */}
-                <div>
-                  <label className="text-xs font-bold text-slate-400 uppercase">College</label>
-                  {isEditing ? (
-                      <Input name="college" value={profile.college} onChange={handleChange} className="mt-1" />
-                  ) : (
-                      <p className="text-sm text-slate-700 mt-1">{profile.college}</p>
-                  )}
-                </div>
-
-                {/* GPA (Editable) */}
-                <div>
-                  <label className="text-xs font-bold text-slate-400 uppercase">GPA</label>
-                  {isEditing ? (
-                      <Input name="gpa" type="number" step="0.1" value={profile.gpa} onChange={handleChange} className="mt-1" />
-                  ) : (
-                      <p className="text-sm text-slate-700 mt-1">{profile.gpa}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* ACTION BUTTONS */}
-              <div className="pt-6">
-                {isEditing ? (
-                    <Button onClick={handleSave} className="w-full bg-green-600 hover:bg-green-700 text-white">
-                      Save Changes
+                    <Button
+                      onClick={handleSave}
+                      disabled={isSaving}
+                      className="w-full px-6 py-3 border-4 border-black rounded-none bg-white text-black font-black uppercase hover:bg-black hover:text-white transition-colors disabled:opacity-50"
+                    >
+                      {isSaving ? "Saving..." : "Save Changes"}
                     </Button>
-                ) : (
-                    <Button onClick={() => setIsEditing(true)} variant="outline" className="w-full border-black text-black hover:bg-black hover:text-white">
+                  ) : (
+                    <Button
+                      onClick={() => setIsEditing(true)}
+                      variant="outline"
+                      className="w-full px-6 py-3 border-4 border-black rounded-none bg-white text-black font-black uppercase hover:bg-black hover:text-white"
+                    >
                       Edit Profile
                     </Button>
-                )}
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </section>
+        )}
+      </main>
+    </div>
   );
 }
 

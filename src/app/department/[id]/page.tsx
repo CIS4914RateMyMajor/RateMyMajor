@@ -10,7 +10,17 @@ type DepartmentMajor = {
   name: string;
   type: string | null;
   department_name: string;
+  avg_rating: number;
 };
+
+function getRatingColorClass(rating: number) {
+  if (rating >= 4.5) return "bg-green-500";
+  if (rating >= 3.5) return "bg-lime-500";
+  if (rating >= 2.5) return "bg-yellow-400";
+  if (rating >= 1.5) return "bg-orange-400";
+  if (rating > 0) return "bg-red-500";
+  return "bg-gray-200";
+}
 
 export default function DepartmentMajorsPage() {
   const params = useParams<{ id: string }>();
@@ -55,30 +65,69 @@ export default function DepartmentMajorsPage() {
   return (
     <div className="min-h-screen bg-white text-black font-sans">
       <Navbar />
-      <main className="max-w-5xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-6xl mx-auto p-8">
         {loading ? (
-          <p className="font-bold">Loading majors...</p>
+          <div className="flex justify-center items-center py-20">
+            <span className="text-2xl font-black animate-pulse uppercase">LOADING MAJORS...</span>
+          </div>
         ) : error ? (
-          <div className="border border-red-500 bg-red-50 p-4 text-red-700">{error}</div>
+          <div className="bg-red-50 border-4 border-red-500 p-8 text-red-700 font-bold">
+            ERROR: {error}
+          </div>
         ) : (
-          <section className="border border-black p-4">
-            <h1 className="text-2xl font-bold mb-4">
-              {majors[0]?.department_name || "Department"} Majors (placeholder UI)
-            </h1>
+          <section>
+            <header className="mb-12 border-b-6 border-black pb-8">
+              <h1 className="text-5xl font-black tracking-tight uppercase leading-none mb-4">
+                {majors[0]?.department_name || "Department"}
+              </h1>
+              <p className="text-gray-600 max-w-2xl text-lg">
+                Browse all majors in this department and jump directly to student reviews.
+              </p>
+            </header>
 
             {majors.length === 0 ? (
-              <p className="text-sm">No majors found for this department.</p>
+              <div className="text-center py-20 border-6 border-dashed border-gray-300">
+                <p className="text-2xl font-black text-gray-400 uppercase tracking-widest">
+                  No majors found for this department
+                </p>
+              </div>
             ) : (
-              <ul className="space-y-2">
+              <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {majors.map((major) => (
-                  <li key={major.id} className="border border-gray-300 p-3 flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{major.name}</p>
-                      <p className="text-xs text-gray-500">Type: {major.type || "N/A"}</p>
+                  <li
+                    key={major.id}
+                    className="border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+                  >
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="bg-black text-white text-xs font-black px-3 py-1 uppercase tracking-widest">
+                        {major.type || "MAJOR"}
+                      </span>
+                      <span className="text-gray-400 font-bold text-xs">#{major.id}</span>
                     </div>
-                    <Link href={`/major/${major.id}`} className="underline text-sm">
-                      View ratings
-                    </Link>
+
+                    <h2 className="text-2xl font-black uppercase mb-4 leading-tight min-h-[4rem]">
+                      {major.name}
+                    </h2>
+
+                    <div className="pt-4 border-t-4 border-black flex justify-between items-center">
+                      <Link href={`/major/${major.id}`} className="font-black text-sm uppercase underline hover:no-underline">
+                        View Reviews
+                      </Link>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((i) => {
+                          const filledCount = Math.max(0, Math.min(5, Math.round(major.avg_rating || 0)));
+                          const isFilled = i <= filledCount;
+                          return (
+                            <div
+                              key={i}
+                              className={`w-3 h-3 border-2 border-black rounded-full ${
+                                isFilled ? getRatingColorClass(major.avg_rating || 0) : "bg-white"
+                              }`}
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
                   </li>
                 ))}
               </ul>
