@@ -6,7 +6,7 @@
 
 import type { APIError } from "./types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 type HTTPMethod = "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
 
@@ -31,7 +31,11 @@ class APIClient {
     body?: unknown,
     options?: RequestOptions
   ): Promise<T> {
-    const url = new URL(endpoint, this.baseURL).toString();
+    const url = endpoint.startsWith("http")
+      ? endpoint
+      : this.baseURL
+        ? new URL(endpoint, this.baseURL).toString()
+        : endpoint;
     const timeout = options?.timeout || 30000;
 
     const headers: HeadersInit = {

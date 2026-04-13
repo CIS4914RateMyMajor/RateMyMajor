@@ -5,7 +5,7 @@
 
 export const apiConfig = {
   // API Base URL - Points to your Next.js /api routes
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "",
 
   // API endpoints (Next.js routes)
   endpoints: {
