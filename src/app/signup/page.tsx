@@ -14,8 +14,18 @@ export default function SignUpPage() {
   );
 
   return (
-      <div className="min-h-screen bg-white text-black">
-        <Navbar />
+      <div className="relative min-h-screen text-black">
+  <div 
+    className="fixed inset-0 pointer-events-none"
+    style={{
+      backgroundImage: "url('/art_assets/bkgd.png')", 
+      backgroundSize: '400px',
+      backgroundRepeat: 'repeat',
+      opacity: 0.15,
+      zIndex: -1, 
+    }}
+  />
+      <Navbar />
         <main className="max-w-6xl mx-auto p-8">
           <div className="max-w-xl mx-auto border-6 border-black p-8 md:p-10 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <header className="mb-8 border-b-4 border-black pb-5 text-center">
@@ -82,7 +92,7 @@ export default function SignUpPage() {
         <Button
           type="submit"
           disabled={isPending}
-          className="w-full h-12 border-4 border-black rounded-none bg-white text-black font-black uppercase tracking-wide hover:bg-black hover:text-white"
+          className="w-full h-12 border-4 border-black rounded-none bg-yellow-400 text-black font-black uppercase tracking-wide hover:bg-black hover:text-white"
         >
           {isPending ? "Signing up..." : "Sign Up"}
         </Button>
