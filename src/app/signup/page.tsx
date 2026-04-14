@@ -14,7 +14,7 @@ export default function SignUpPage() {
   );
 
   return (
-      <div className="min-h-screen bg-white text-black font-sans">
+      <div className="min-h-screen bg-white text-black">
         <Navbar />
         <main className="max-w-6xl mx-auto p-8">
           <div className="max-w-xl mx-auto border-6 border-black p-8 md:p-10 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">

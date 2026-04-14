@@ -4,7 +4,7 @@ import HomeSearch from "./home-search";
 
 export default async function Home() {
   return (
-      <div className="min-h-screen bg-white text-black font-sans">
+      <div className="min-h-screen bg-white text-black">
 
         {/* Navbar */}
         <Navbar/>
@@ -19,7 +19,7 @@ export default async function Home() {
               <img src="/art_assets/grad cap art.png" alt="" className="w-full h-full object-contain" />
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-center leading-none uppercase">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-Lemon Smash tracking-tight text-center leading-none uppercase">
               RATE MY MAJOR
             </h1>
 
