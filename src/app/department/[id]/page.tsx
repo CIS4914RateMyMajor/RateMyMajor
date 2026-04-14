@@ -63,7 +63,18 @@ export default function DepartmentMajorsPage() {
   }, [departmentId]);
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans">
+      <div className="relative min-h-screen text-black">
+        <div 
+          className="fixed inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "url('/art_assets/bkgd.png')", 
+            backgroundSize: '400px',
+            backgroundRepeat: 'repeat',
+            opacity: 0.15,
+            zIndex: -1, 
+          }}
+        />
+    <div className="min-h-screen bg-transparent text-black font-sans">
       <Navbar />
       <main className="max-w-6xl mx-auto p-8">
         {loading ? (
@@ -144,6 +155,7 @@ export default function DepartmentMajorsPage() {
           </section>
         )}
       </main>
+      </div>
     </div>
   );
 }

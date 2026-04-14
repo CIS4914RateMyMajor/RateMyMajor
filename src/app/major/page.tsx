@@ -54,12 +54,13 @@ function MajorsContent() {
   const schoolName = majors.length > 0 && universityId ? majors[0].universityName : null;
 
   return (
-    <main className="max-w-6xl mx-auto p-4 md:p-8">
+    
+    <main className="max-w-6xl mx-auto text-center p-4 md:p-8">
       <header className="mb-8 md:mb-12 border-b-6 border-black pb-6 md:pb-8">
         <h1 className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-none mb-3 md:mb-4">
           {schoolName ? `Majors at ${schoolName}` : "Explore Majors"}
         </h1>
-        <p className="text-gray-600 max-w-2xl text-base md:text-lg">
+        <p className="text-black-600 font-bold max-w-2xl mx-auto text-base mx-auto md:text-lg">
           {schoolName 
             ? `Viewing all ${majors.length} academic programs available at this institution.` 
             : "Search through hundreds of programs from top universities. See what real students have to say about their academic journey."}
@@ -143,11 +144,23 @@ function MajorsContent() {
 
 export default function MajorsPage() {
   return (
-    <div className="min-h-screen bg-white text-black font-sans">
+      <div className="relative min-h-screen text-black">
+    <div 
+      className="fixed inset-0 pointer-events-none"
+      style={{
+        backgroundImage: "url('/art_assets/bkgd.png')", 
+        backgroundSize: '400px',
+        backgroundRepeat: 'repeat',
+        opacity: 0.15,
+        zIndex: -1, 
+      }}
+    />
+    <div className="min-h-screen bg-transparent text-black font-sans">
       <Navbar />
       <Suspense fallback={<div className="flex justify-center items-center h-screen font-black text-2xl uppercase">Loading...</div>}>
         <MajorsContent />
       </Suspense>
+    </div>
     </div>
   );
 }

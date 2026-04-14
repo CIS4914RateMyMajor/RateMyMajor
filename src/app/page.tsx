@@ -29,11 +29,9 @@ export default async function Home() {
           </div>
       </section>
 
-        <HomeSearch />
-
         {/* Product value + quick actions */}
         <section className="px-6 md:px-12 pt-2 pb-10">
-          <div className="max-w-5xl mx-auto border-2 border-black p-5 md:p-6 bg-[#B1A088] text-center">
+          <div className="max-w-5xl mx-auto border-6 border-black p-5 md:p-6 bg-[#B1A088] text-center  shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
              <div className="inline-block bg-yellow-400 text-black text-s-bold font-black px-3 py-1 uppercase tracking-widest border-2 border-black mb-3">
                 Why RateMyMajor
             </div>
@@ -59,6 +57,10 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        <HomeSearch />
+
+
       </div>
     </div>
   );

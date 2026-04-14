@@ -50,15 +50,25 @@ export default function SchoolsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans">
+      <div className="relative min-h-screen text-black">
+      <div 
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url('/art_assets/bkgd.png')", 
+          backgroundSize: '400px',
+          backgroundRepeat: 'repeat',
+          opacity: 0.15,
+          zIndex: -1, 
+        }}
+      /> 
       <Navbar />
       
       <main className="max-w-6xl mx-auto p-4 md:p-8">
-        <header className="mb-8 md:mb-12 border-b-6 border-black pb-6 md:pb-8">
+        <header className="mb-8 md:mb-12 border-b-6 text-center border-black pb-6 md:pb-8">
           <h1 className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-none mb-3 md:mb-4">
             Verified Schools
           </h1>
-          <p className="text-gray-600 max-w-2xl text-base md:text-lg">
+          <p className="text-black-600 font-bold max-w-2xl text-base mx-auto md:text-lg">
             Browse through our verified institutions. Click a school to explore its specific departments and majors.
           </p>
         </header>
@@ -68,7 +78,7 @@ export default function SchoolsPage() {
           <input
             type="text"
             placeholder="Search by university name or location..."
-            className="w-full p-4 md:p-6 text-base md:text-xl border-4 border-black font-bold uppercase tracking-wide md:tracking-widest focus:bg-black focus:text-white transition-all outline-none"
+            className="w-full p-4 md:p-6 text-base text-black md:text-xl border-4 border-black font-bold uppercase tracking-wide md:tracking-widest focus:bg-black focus:text-white transition-all outline-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
