@@ -6,7 +6,7 @@ export default async function Home() {
   return (
     <div className="relative min-h-screen bg-transparent text-black">
       <div 
-        className="fixed inset-0 pointer-events-none opacity-30"
+        className="fixed bg-white inset-0 pointer-events-none opacity-30"
         style={{
           backgroundImage: "url('/art_assets/RateMyMajorBackground.png')", 
           backgroundSize: 'cover',
@@ -43,17 +43,16 @@ export default async function Home() {
               student reviews, difficulty ratings, and outcomes. Browse verified
               institutions, explore departments, and share your own experience.
             </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 max-w-xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5 max-w-xl mx-auto">
               <Link
                 href="/school"
-                className="px-5 py-3 border-2 border-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                className="px-5 py-3 border-2 border-black bg-white font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
               >
                 Browse Schools
               </Link>
               <Link
                 href="/major"
-                className="px-5 py-3 border-2 border-black font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                className="px-5 py-3 border-2 border-black bg-white font-black uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
               >
                 Explore Majors
               </Link>
