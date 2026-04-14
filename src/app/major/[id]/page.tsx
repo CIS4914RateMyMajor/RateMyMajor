@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Navbar from "@/app/nav-bar";
 import { reviewsAPI } from "@/lib/reviews";
 import { authClient } from "@/lib/auth-client";
@@ -35,9 +35,14 @@ type MajorReview = {
 
 export default function MajorDetailPage() {
   const params = useParams<{ id: string }>();
+  const pathname = usePathname();
   const majorId = Number(params?.id);
 
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending: isSessionPending, refetch: refetchSession } = authClient.useSession();
+
+  useEffect(() => {
+    refetchSession();
+  }, [pathname, refetchSession]);
 
   const [major, setMajor] = useState<MajorDetail | null>(null);
   const [reviews, setReviews] = useState<MajorReview[]>([]);
@@ -164,7 +169,11 @@ export default function MajorDetailPage() {
             <section className="border-6 border-black p-6 bg-white">
               <h2 className="text-2xl font-black uppercase tracking-tight mb-6">Write a review</h2>
 
-              {!session ? (
+              {isSessionPending ? (
+                 <div className="border-2 border-black p-4 text-sm font-bold uppercase tracking-wide animate-pulse">
+                  CHECKING SESSION...
+                </div>
+              ) : !session ? (
                 <div className="border-2 border-black p-4 text-sm font-bold uppercase tracking-wide">
                   Sign in to submit a review.
                 </div>
