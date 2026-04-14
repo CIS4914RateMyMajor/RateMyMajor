@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
@@ -9,28 +9,18 @@ export default function NavBar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [session, setSession] = useState<any>(null);
-  const [isPending, setIsPending] = useState(true);
+  const { data: session, isPending, refetch: refetchSession } = authClient.useSession();
   const [isHovered, setIsHovered] = useState(false);
 
-  const syncSession = useCallback(async () => {
-    setIsPending(true);
-    try {
-      const result = await authClient.getSession();
-      setSession(result?.data ?? null);
-    } finally {
-      setIsPending(false);
-    }
-  }, []);
-
   useEffect(() => {
-    syncSession();
-  }, [pathname, syncSession]);
+    refetchSession();
+  }, [pathname, refetchSession]);
 
   const isLoggedIn = !!session;
 
   const handleLogout = async () => {
     await authClient.signOut();
+    await refetchSession();
     router.replace("/");
     router.refresh();
   };
