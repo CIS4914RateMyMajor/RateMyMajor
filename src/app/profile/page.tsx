@@ -73,14 +73,25 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans">
+    <div className="min-h-screen bg-transparent text-black font-sans">
+        <div className="relative min-h-screen text-black">
+          <div 
+            className="fixed inset-0 pointer-events-none"
+            style={{
+              backgroundImage: "url('/art_assets/bkgd.png')", 
+              backgroundSize: '400px',
+              backgroundRepeat: 'repeat',
+              opacity: 0.15,
+              zIndex: -1, 
+            }}
+          />
       <Navbar />
       <main className="max-w-6xl mx-auto p-8 space-y-8">
         <header className="border-b-6 border-black pb-8">
           <h1 className="text-5xl font-black tracking-tight uppercase leading-none mb-4">
             {isEditing ? "Edit Profile" : "User Profile"}
           </h1>
-          <p className="text-gray-600 max-w-2xl text-lg">
+          <p className="text-black-600 font-bold max-w-2xl text-lg">
             Keep your major, college, and academic info up to date.
           </p>
         </header>
@@ -190,6 +201,7 @@ export default function ProfilePage() {
           </section>
         )}
       </main>
+      </div>
     </div>
   );
 }

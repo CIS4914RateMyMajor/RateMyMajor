@@ -78,7 +78,7 @@ export default function SchoolsPage() {
           <input
             type="text"
             placeholder="Search by university name or location..."
-            className="w-full p-4 md:p-6 text-base text-black md:text-xl border-4 border-black font-bold uppercase tracking-wide md:tracking-widest focus:bg-black focus:text-white transition-all outline-none"
+            className="w-full p-4 md:p-6 text-base text-black bg-white md:text-xl border-4 border-black font-bold uppercase tracking-wide md:tracking-widest focus:bg-black focus:text-white transition-all outline-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
