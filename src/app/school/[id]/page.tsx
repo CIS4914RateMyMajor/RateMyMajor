@@ -111,36 +111,38 @@ export default function SchoolDetailPage() {
               ) : (
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {departments.map((dept) => (
-                    <li
-                      key={dept.id}
-                      className="border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
-                    >
-                      <div className="flex justify-between items-start mb-4">
-                        <span className="bg-yellow-400 text-black text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black">
-                          DEPARTMENT
-                        </span>
-                        <span className="text-gray-400 font-bold text-xs">#{dept.id}</span>
-                      </div>
-
-                      <h3 className="text-2xl font-black uppercase mb-4 leading-tight min-h-[4rem]">
-                        {dept.name}
-                      </h3>
-
-                      <div className="border-2 border-black p-3 text-center mb-6">
-                        <p className="text-2xl font-black">{dept.major_count}</p>
-                        <p className="text-[10px] font-black uppercase tracking-widest">Majors</p>
-                      </div>
-
-                      <div className="pt-4 border-t-4 border-black flex justify-between items-center">
-                        <Link href={`/department/${dept.id}`} className="font-black text-sm uppercase underline hover:no-underline">
-                          Explore Majors
-                        </Link>
-                        <div className="bg-black text-white p-1">
-                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 15L15 5M15 5H7M15 5V13" stroke="currentColor" strokeWidth="3" strokeLinecap="square"/>
-                          </svg>
+                    <li key={dept.id}>
+                      <Link
+                        href={`/department/${dept.id}`}
+                        className="group block border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+                      >
+                        <div className="flex justify-between items-start mb-4">
+                          <span className="bg-yellow-400 text-black text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black">
+                            DEPARTMENT
+                          </span>
+                          <span className="text-gray-400 font-bold text-xs">#{dept.id}</span>
                         </div>
-                      </div>
+
+                        <h3 className="text-2xl font-black uppercase mb-4 leading-tight min-h-[4rem]">
+                          {dept.name}
+                        </h3>
+
+                        <div className="border-2 border-black p-3 text-center mb-6">
+                          <p className="text-2xl font-black">{dept.major_count}</p>
+                          <p className="text-[10px] font-black uppercase tracking-widest">Majors</p>
+                        </div>
+
+                        <div className="pt-4 border-t-4 border-black flex justify-between items-center">
+                          <span className="font-black text-sm uppercase underline group-hover:no-underline">
+                            Explore Majors
+                          </span>
+                          <div className="bg-black text-white p-1 group-hover:bg-yellow-400 group-hover:text-black transition-colors">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M5 15L15 5M15 5H7M15 5V13" stroke="currentColor" strokeWidth="3" strokeLinecap="square"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </Link>
                     </li>
                   ))}
                 </ul>

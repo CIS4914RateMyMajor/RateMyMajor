@@ -88,9 +88,10 @@ function MajorsContent() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
           {filteredMajors.map((major) => (
-            <div 
-              key={major.id} 
-              className="border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none group"
+            <Link
+              key={major.id}
+              href={`/major/${major.id}`}
+              className="group block border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
             >
               <div className="flex justify-between items-start mb-4">
                 <span className="bg-black text-white text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black">
@@ -115,16 +116,16 @@ function MajorsContent() {
               </div>
 
               <div className="mt-6 pt-6 border-t-4 border-black flex justify-between items-center">
-                <Link href={`/major/${major.id}`} className="font-black text-sm uppercase underline hover:no-underline">
+                <span className="font-black text-sm uppercase underline group-hover:no-underline">
                   View Reviews
-                </Link>
+                </span>
                 <div className="bg-black text-white p-1 group-hover:bg-yellow-400 group-hover:text-black transition-colors">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5 15L15 5M15 5H7M15 5V13" stroke="currentColor" strokeWidth="3" strokeLinecap="square"/>
                   </svg>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

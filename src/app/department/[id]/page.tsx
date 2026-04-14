@@ -94,40 +94,49 @@ export default function DepartmentMajorsPage() {
             ) : (
               <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {majors.map((major) => (
-                  <li
-                    key={major.id}
-                    className="border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
-                  >
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="bg-black text-white text-xs font-black px-3 py-1 uppercase tracking-widest">
-                        {major.type || "MAJOR"}
-                      </span>
-                      <span className="text-gray-400 font-bold text-xs">#{major.id}</span>
-                    </div>
-
-                    <h2 className="text-2xl font-black uppercase mb-4 leading-tight min-h-[4rem]">
-                      {major.name}
-                    </h2>
-
-                    <div className="pt-4 border-t-4 border-black flex justify-between items-center">
-                      <Link href={`/major/${major.id}`} className="font-black text-sm uppercase underline hover:no-underline">
-                        View Reviews
-                      </Link>
-                      <div className="flex gap-1">
-                        {[1, 2, 3, 4, 5].map((i) => {
-                          const filledCount = Math.max(0, Math.min(5, Math.round(major.avg_rating || 0)));
-                          const isFilled = i <= filledCount;
-                          return (
-                            <div
-                              key={i}
-                              className={`w-3 h-3 border-2 border-black rounded-full ${
-                                isFilled ? getRatingColorClass(major.avg_rating || 0) : "bg-white"
-                              }`}
-                            />
-                          );
-                        })}
+                  <li key={major.id}>
+                    <Link
+                      href={`/major/${major.id}`}
+                      className="group block border-6 border-black p-6 hover:translate-x-2 hover:-translate-y-2 transition-transform bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <span className="bg-black text-white text-xs font-black px-3 py-1 uppercase tracking-widest">
+                          {major.type || "MAJOR"}
+                        </span>
+                        <span className="text-gray-400 font-bold text-xs">#{major.id}</span>
                       </div>
-                    </div>
+
+                      <h2 className="text-2xl font-black uppercase mb-4 leading-tight min-h-[4rem]">
+                        {major.name}
+                      </h2>
+
+                      <div className="pt-4 border-t-4 border-black flex justify-between items-center">
+                        <span className="font-black text-sm uppercase underline group-hover:no-underline">
+                          View Reviews
+                        </span>
+                        <div className="flex items-center gap-3">
+                          <div className="flex gap-1">
+                            {[1, 2, 3, 4, 5].map((i) => {
+                              const filledCount = Math.max(0, Math.min(5, Math.round(major.avg_rating || 0)));
+                              const isFilled = i <= filledCount;
+                              return (
+                                <div
+                                  key={i}
+                                  className={`w-3 h-3 border-2 border-black rounded-full ${
+                                    isFilled ? getRatingColorClass(major.avg_rating || 0) : "bg-white"
+                                  }`}
+                                />
+                              );
+                            })}
+                          </div>
+                          <div className="bg-black text-white p-1 group-hover:bg-yellow-400 group-hover:text-black transition-colors">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M5 15L15 5M15 5H7M15 5V13" stroke="currentColor" strokeWidth="3" strokeLinecap="square"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
                   </li>
                 ))}
               </ul>
