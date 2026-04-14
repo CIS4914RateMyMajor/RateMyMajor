@@ -24,6 +24,7 @@ export default function SchoolDetailPage() {
 
   const [university, setUniversity] = useState<University | null>(null);
   const [departments, setDepartments] = useState<Department[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -63,6 +64,11 @@ export default function SchoolDetailPage() {
     loadData();
   }, [universityId]);
 
+  const normalizedSearch = searchTerm.trim().toLowerCase();
+  const filteredDepartments = departments.filter((dept) =>
+    dept.name.toLowerCase().includes(normalizedSearch)
+  );
+
   return (
     <div className="min-h-screen bg-white text-black font-sans">
       <Navbar />
@@ -101,16 +107,26 @@ export default function SchoolDetailPage() {
             </header>
 
             <section>
-              <h2 className="text-2xl font-black uppercase tracking-tight mb-6">Departments</h2>
-              {departments.length === 0 ? (
+              {/* <h2 className="text-2xl font-black uppercase tracking-tight mb-6">Departments</h2> */}
+                      {/* Search Bar */}
+              <div className="mb-8 md:mb-12">
+                <input
+                  type="text"
+                  placeholder="Search by department name..."
+                  className="w-full p-4 md:p-6 text-base md:text-xl border-4 border-black font-bold uppercase tracking-wide md:tracking-widest focus:bg-black focus:text-white transition-all outline-none"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              {filteredDepartments.length === 0 ? (
                 <div className="text-center py-20 border-6 border-dashed border-gray-300">
                   <p className="text-2xl font-black text-gray-400 uppercase tracking-widest">
-                    No departments found
+                    {searchTerm ? `No departments found matching "${searchTerm}"` : "No departments found"}
                   </p>
                 </div>
               ) : (
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {departments.map((dept) => (
+                  {filteredDepartments.map((dept) => (
                     <li key={dept.id}>
                       <Link
                         href={`/department/${dept.id}`}
