@@ -68,6 +68,13 @@ export async function POST(
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    const rows = await db.select().from(user).where(eq(user.id, userId)).limit(1);
+    const userRecord = rows[0];
+
+    if (!userRecord || !userRecord.emailVerified) {
+      return NextResponse.json({ message: "Email verification required" }, { status: 403 });
+    }
+
     const body = await req.json();
     const rating = Number(body?.rating);
     const difficulty = Number(body?.difficulty);
