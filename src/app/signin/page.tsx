@@ -29,7 +29,6 @@ export default function SignInPage() {
                 <div className="max-w-xl mx-auto border-6 border-black p-8 md:p-10 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                     <header className="mb-8 border-b-4 border-black pb-5 text-center">
                         <h1 className="text-4xl font-black tracking-tight uppercase leading-none mb-3">Login</h1>
-                        <img src="/art_assets/RateMyMajorLogo.png" alt="Welcome" className="..." />
             <p className="text-sm text-gray-600 font-bold uppercase tracking-wide">
                     Welcome back to RateMyMajor
                     </p>
