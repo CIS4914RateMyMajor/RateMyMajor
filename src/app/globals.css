@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -34,5 +35,13 @@ body {
 }
 
 body {
-    font-family: 'Lemon Smash', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2 {
+  font-family: 'Lemon Smash', sans-serif;
+}
+
+.montserrat {
+  font-family: 'Montserrat', sans-serif;
 }
