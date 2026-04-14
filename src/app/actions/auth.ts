@@ -58,6 +58,7 @@ export async function signUpAction(
         password,
         name,
       },
+      headers: await headers(),
     });
 
     // 2. Manually send the OTP
@@ -66,7 +67,8 @@ export async function signUpAction(
         body: {
             email,
             type: "email-verification", // This identifies the purpose of the OTP
-        }
+        },
+        headers: await headers(),
     });
 
   } catch (e: any) {
@@ -110,6 +112,7 @@ export async function signInAction(
         email,
         password,
       },
+      headers: await headers(),
     });
   } catch (e: any) {
     console.error("SignIn Action Error:", e);

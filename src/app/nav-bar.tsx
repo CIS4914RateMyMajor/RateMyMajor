@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
@@ -27,23 +27,12 @@ export default function NavBar() {
     syncSession();
   }, [pathname, syncSession]);
 
-  useEffect(() => {
-    const onFocus = () => {
-      syncSession();
-    };
-
-    window.addEventListener("focus", onFocus);
-    return () => window.removeEventListener("focus", onFocus);
-  }, [syncSession]);
-
   const isLoggedIn = !!session;
 
   const handleLogout = async () => {
     await authClient.signOut();
-    await syncSession();
     router.replace("/");
     router.refresh();
-    window.location.reload();
   };
 
   const linkClass = "px-3 py-3 md:px-8 md:py-6 text-xs md:text-base border-r-2 md:border-r-6 border-black hover:bg-black hover:text-white transition-colors uppercase cursor-pointer whitespace-nowrap";
@@ -64,7 +53,7 @@ export default function NavBar() {
       </Link>
       <div className="w-full md:w-auto flex items-center justify-center md:justify-end text-xs md:text-sm font-bold tracking-widest overflow-x-auto">
         {isPending ? (
-          <div className="px-3 py-3 md:px-8 md:py-6 text-xs md:text-base border-l-2 md:border-l-6 border-black opacity-50 whitespace-nowrap">LOADING...</div>
+          <div className="px-3 py-3 md:px-8 md:py-6 text-xs md:text-base border-l-2 md:border-l-6 border-black opacity-50 whitespace-nowrap uppercase">Loading...</div>
         ) : !isLoggedIn ? (
           <>
             <Link href="/signup" className={`border-l-2 md:border-l-6 ${linkClass}`}>SIGN UP</Link>

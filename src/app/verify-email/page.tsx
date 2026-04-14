@@ -1,12 +1,13 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/features/shared/components/ui/button";
 import { Input } from "@/features/shared/components/ui/input";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const email = searchParams.get("email") || "";
@@ -35,7 +36,7 @@ export default function VerifyEmailPage() {
     setError("");
 
     // The correct method for email verification via OTP is verifyEmail
-    const { data, error: verifyError } = await authClient.emailOtp.verifyEmail({
+    const { error: verifyError } = await authClient.emailOtp.verifyEmail({
       email: email,
       otp: code,
     });
@@ -115,5 +116,13 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen font-bold uppercase">Loading...</div>}>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
