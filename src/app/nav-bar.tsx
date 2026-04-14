@@ -11,6 +11,7 @@ export default function NavBar() {
 
   const [session, setSession] = useState<any>(null);
   const [isPending, setIsPending] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   const syncSession = useCallback(async () => {
     setIsPending(true);
@@ -49,10 +50,18 @@ export default function NavBar() {
 
   return (
     <nav className="w-full flex flex-col md:flex-row md:items-center md:justify-between border-b-6 border-black bg-white">
-      <Link href="/" className={`w-full md:w-auto text-center md:text-left font-bold text-base md:text-lg tracking-tight ${linkClass}`}>
-        RateMyMajor
+      <Link 
+        href="/" 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="flex items-center px-4 md:px-8 py-2 md:py-4 border-r-2 md:border-r-6 border-black hover:bg-black transition-all duration-200"
+      >
+        <img 
+          src={isHovered ? "/art_assets/RateMyMajorLogo(white).png" : "/art_assets/RateMyMajorLogo.png"} 
+          alt="RateMyMajor" 
+          className="h-8 md:h-12 w-auto object-contain" 
+        />
       </Link>
-
       <div className="w-full md:w-auto flex items-center justify-center md:justify-end text-xs md:text-sm font-bold tracking-widest overflow-x-auto">
         {isPending ? (
           <div className="px-3 py-3 md:px-8 md:py-6 text-xs md:text-base border-l-2 md:border-l-6 border-black opacity-50 whitespace-nowrap">LOADING...</div>
