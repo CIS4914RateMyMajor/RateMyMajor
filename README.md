@@ -40,11 +40,27 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Run ```npm run db:studio``` to see the Drizzle database studio in your browser.
 
-To load UF department and major data, navigate to the scraper directory and activate the virtual environment.
-Then, run the script:
+To load UF department and major data, navigate to the scraper directory.
 
+To create the venv, run:
+```bash
+python -m venv .venv
+```
+To activate it, run:
+- ```source .venv/bin/activate``` on MacOS/Linux
+- ```.venv\Scripts\activate``` on Windows
+
+To install the dependencies, run:
+```bash
+pip install -r requirements.txt
+```
+Now we can load the db with UF data using:
 ```bash
 npm run db:load
+```
+We can also create example reviews with:
+```bash
+npm run db:reviews
 ```
 
 To bring down the database and delete it's volumes, run:
