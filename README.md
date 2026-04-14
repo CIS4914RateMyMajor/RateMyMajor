@@ -13,6 +13,17 @@ then, spin up the mysql db container:
 docker-compose up -d
 ```
 
+To populate the database with our shema or after modifying the drizzle schema, run:
+```bash
+npx drizzle-kit push
+```
+or
+```bash
+npm run db:push
+```
+
+to reflect changes. see [drizzle docs](https://orm.drizzle.team/docs/get-started/mysql-new) for more info
+
 Then, run the development server:
 
 ```bash
@@ -25,14 +36,21 @@ pnpm dev
 bun dev
 ```
 
-after modifying the drizzle schema, you can run:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the webpage.
+
+Run ```npm run db:studio``` to see the Drizzle database studio in your browser.
+
+To load UF department and major data, navigate to the scraper directory and activate the virtual environment.
+Then, run the script:
+
 ```bash
-npx drizzle-kit push
+npm run db:load
 ```
 
-to reflect changes. see [drizzle docs](https://orm.drizzle.team/docs/get-started/mysql-new) for more info
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To bring down the database and delete it's volumes, run:
+```bash
+docker-compose down -v
+```
 
 ## Learn More
 

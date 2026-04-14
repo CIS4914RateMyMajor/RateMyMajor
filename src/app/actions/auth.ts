@@ -77,7 +77,7 @@ export async function signUpAction(
         fields: { email, name }
       };
     }
-    
+
     return {
       message: "Failed to sign up. Please try again.",
     };
@@ -86,25 +86,51 @@ export async function signUpAction(
   redirect(`/verify-email?email=${encodeURIComponent(email)}`);
 }
 
-export async function signInAction(formData: FormData) {
-  const email = formData.get("email") as string; // TODO: validate
+export type SignInFormState = {
+  errors?: {
+    email?: string[];
+    password?: string[];
+  };
+  message?: string;
+  fields?: {
+    email?: string;
+  };
+} | null;
+
+export async function signInAction(
+  prevState: SignInFormState,
+  formData: FormData
+): Promise<SignInFormState> {
+  const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  // send to backend
-  await auth.api.signInEmail({
-    body: {
-      email,
-      password,
-    },
-  });
-
-  redirect("/");
-}
-
-export async function signOutAction() {
-    await auth.api.signOut({
-        headers: await headers(),
+  try {
+    await auth.api.signInEmail({
+      body: {
+        email,
+        password,
+      },
     });
+  } catch (e: any) {
+    console.error("SignIn Action Error:", e);
+    return {
+      message: "Invalid credentials or verification required.",
+      fields: { email },
+    };
+  }
 
     redirect("/");
 }
+
+export async function signOutAction() {
+  console.log("signOutAction: Triggering server-side sign out...");
+  const headersList = await headers();
+  
+  await auth.api.signOut({
+    headers: headersList,
+  });
+
+  console.log("signOutAction: Sign out complete, redirecting...");
+  redirect("/");
+}
+  
