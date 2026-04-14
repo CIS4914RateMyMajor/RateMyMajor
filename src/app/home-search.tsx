@@ -117,9 +117,9 @@ export default function HomeSearch() {
 
   return (
     <section className="px-6 md:px-12 py-8">
-      <div className="max-w-5xl mx-auto border-6 border-black p-8 md:p-10 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <div className="max-w-5xl mx-auto border-6 bg-[#B1A088] border-black p-8 md:p-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="text-center mb-6">
-          <div className="inline-block bg-yellow-400 text-black text-xs font-black px-3 py-1 uppercase tracking-widest border-2 border-black mb-3">
+          <div className="inline-block bg-yellow-400 text-black text-s-bold font-black px-3 py-1 uppercase tracking-widest border-2 border-black mb-3">
             Search Everything
           </div>
           <p className="text-gray-600 font-bold uppercase tracking-wide text-sm">
@@ -132,7 +132,7 @@ export default function HomeSearch() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search schools, departments, or majors..."
-          className="w-full p-5 text-lg border-4 border-black font-bold uppercase tracking-wide focus:bg-black focus:text-white transition-all outline-none"
+          className="w-full p-5 text-lg border-4 bg-white border-black font-bold uppercase tracking-wide focus:bg-black focus:text-white transition-all outline-none"
         />
 
         {isLoading ? (
